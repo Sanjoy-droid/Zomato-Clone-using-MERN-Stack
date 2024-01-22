@@ -1,4 +1,3 @@
-import Delivery from "./Delivery";
 import HomeCards from "./HomeCards";
 const Home = () => {
   return (
