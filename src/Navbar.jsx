@@ -39,9 +39,13 @@ const Navbar = () => {
         {/* Buttons */}
         <div className="flex justify-center items-center space-x-4 ml-12 text-lg text-gray-800">
           {/* Login */}
-          <button className="login">Log in</button>
+          <button className="login transition-opacity duration-300 hover:opacity-50">
+            Log in
+          </button>
           {/* Sign Up*/}
-          <button className="signup">Sign up</button>
+          <button className="signup transition-opacity duration-300 hover:opacity-50">
+            Sign up
+          </button>
         </div>
       </div>
     </>

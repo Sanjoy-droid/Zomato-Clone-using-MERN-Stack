@@ -1,0 +1,302 @@
+import { useState } from "react";
+import AppContext from "./appContext";
+import ResturantContext from "./ResturantContext";
+const AppState = (props) => {
+  const dataInitial = [
+    {
+      id: 3,
+      title: "Mutton Biriyani",
+      description: "Biriyani, North Indian",
+      rating: 4.8,
+      discount: 20,
+      price: 180,
+      time: 25,
+      image: "../../../public/img1.avif",
+    },
+    {
+      id: 4,
+      title: "Emily",
+      description: "Consectetur adipiscing elit.",
+      rating: 4.1,
+      discount: 15,
+      price: 300,
+      time: 45,
+      image: "../../../public/img2.avif",
+    },
+    {
+      id: 5,
+      title: "Michael",
+      description:
+        "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      rating: 4.5,
+      discount: 30,
+      price: 150,
+      time: 30,
+      image: "../../../public/img3.avif",
+    },
+    {
+      id: 6,
+      title: "Sophia",
+      description: "Ut enim ad minim veniam.",
+      rating: 4.9,
+      discount: 25,
+      price: 200,
+      time: 35,
+      image: "../../../public/img4.avif",
+    },
+    {
+      id: 7,
+      title: "William",
+      description:
+        "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+      rating: 4.2,
+      discount: 10,
+      price: 220,
+      time: 40,
+      image: "../../../public/img5.avif",
+    },
+    {
+      id: 8,
+      title: "Emma",
+      description: "Excepteur sint occaecat cupidatat non proident.",
+      rating: 4.6,
+      discount: 20,
+      price: 280,
+      time: 50,
+      image: "../../../public/img6.avif",
+    },
+    {
+      id: 9,
+      title: "Alexander",
+      description:
+        "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.",
+      rating: 4.3,
+      discount: 15,
+      price: 190,
+      time: 30,
+      image: "../../../public/img7.avif",
+    },
+    {
+      id: 10,
+      title: "Olivia",
+      description:
+        "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident.",
+      rating: 4.7,
+      discount: 25,
+      price: 320,
+      time: 55,
+      image: "../../../public/img8.avif",
+    },
+    {
+      id: 11,
+      title: "Ethan",
+      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+      rating: 4.4,
+      discount: 15,
+      price: 250,
+      time: 40,
+      image: "../../../public/img9.avif",
+    },
+    {
+      id: 12,
+      title: "Isabella",
+      description:
+        "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.",
+      rating: 4.9,
+      discount: 20,
+      price: 280,
+      time: 45,
+      image: "../../../public/img10.avif",
+    },
+    {
+      id: 13,
+      title: "Liam",
+      description:
+        "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.",
+      rating: 4.6,
+      discount: 10,
+      price: 200,
+      time: 35,
+      image: "../../../public/img11.avif",
+    },
+    {
+      id: 14,
+      title: "Ava",
+      description:
+        "Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet.",
+      rating: 4.3,
+      discount: 30,
+      price: 300,
+      time: 50,
+      image: "../../../public/img12.avif",
+    },
+    {
+      id: 15,
+      title: "Mason",
+      description:
+        "Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur.",
+      rating: 4.8,
+      discount: 25,
+      price: 270,
+      time: 42,
+      image: "../../../public/img13.avif",
+    },
+    {
+      id: 16,
+      title: "Noah",
+      description:
+        "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+      rating: 4.5,
+      discount: 20,
+      price: 260,
+      time: 38,
+      image: "../../../public/img14.avif",
+    },
+    {
+      id: 17,
+      title: "Sophia",
+      description:
+        "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+      rating: 4.7,
+      discount: 15,
+      price: 290,
+      time: 48,
+      image: "../../../public/img15.avif",
+    },
+  ];
+
+  const resturants = [
+    {
+      id: 1,
+      name: "Pepe Rosa",
+      address: "Camac Street",
+      situated: "Street Area",
+      rating: 4.8,
+      price: 1800,
+      distance: 25,
+      image: "../../../public/resturant images/img1.avif",
+    },
+    {
+      id: 2,
+      name: "Sushi Samurai",
+      address: "Zen Garden",
+      situated: "Cherry Blossom",
+      rating: 4.7,
+      price: 3000,
+      distance: 10,
+      image: "../../../public/resturant images/img2.avif",
+    },
+    {
+      id: 3,
+      name: "Taco Town",
+      address: "Jalapeno Boulevard",
+      situated: "Guacamole City",
+      rating: 4.2,
+      price: 1500,
+      distance: 20,
+      image: "../../../public/resturant images/img3.avif",
+    },
+    {
+      id: 4,
+      name: "Mamma Mia",
+      address: "Pasta Avenue",
+      situated: "Little Italy",
+      rating: 4.5,
+      price: 2500,
+      distance: 15,
+      image: "../../../public/resturant images/img4.avif",
+    },
+    {
+      id: 5,
+      name: "Burger Palace",
+      address: "Fries Street",
+      situated: "Cheese District",
+      rating: 4.6,
+      price: 1200,
+      distance: 18,
+      image: "../../../public/resturant images/img5.avif",
+    },
+    {
+      id: 6,
+      name: "Pizza Paradise",
+      address: "Mozzarella Lane",
+      situated: "Pepperoni Plaza",
+      rating: 4.9,
+      price: 1800,
+      distance: 12,
+      image: "../../../public/resturant images/img6.avif",
+    },
+    {
+      id: 7,
+      name: "Curry Corner",
+      address: "Naan Avenue",
+      situated: "Spices Street",
+      rating: 4.3,
+      price: 1000,
+      distance: 22,
+      image: "../../../public/resturant images/img7.avif",
+    },
+    {
+      id: 8,
+      name: "Emily's Kitchen",
+      address: "Main Street",
+      situated: "Culinary District",
+      rating: 4.8,
+      price: 2000,
+      distance: 8,
+      image: "../../../public/resturant images/img8.avif",
+    },
+    {
+      id: 9,
+      name: "Taste of Thailand",
+      address: "Chili Avenue",
+      situated: "Basil Boulevard",
+      rating: 4.7,
+      price: 2200,
+      distance: 14,
+      image: "../../../public/resturant images/img9.avif",
+    },
+    {
+      id: 10,
+      name: "Steakhouse Supreme",
+      address: "Ribeye Road",
+      situated: "Sirloin Street",
+      rating: 4.4,
+      price: 2800,
+      distance: 30,
+      image: "../../../public/resturant images/img10.avif",
+    },
+    {
+      id: 11,
+      name: "Seafood Sensation",
+      address: "Lobster Lane",
+      situated: "Shrimp Square",
+      rating: 4.6,
+      price: 1900,
+      distance: 25,
+      image: "../../../public/resturant images/img11.avif",
+    },
+    {
+      id: 12,
+      name: "Veggie Delight",
+      address: "Garden Green",
+      situated: "Veggie Valley",
+      rating: 4.9,
+      price: 1500,
+      distance: 17,
+      image: "../../../public/resturant images/img12.avif",
+    },
+  ];
+
+  const [data, setData] = useState(dataInitial);
+  const [resturant, setResturan] = useState(resturants);
+  return (
+    <AppContext.Provider value={{ data, setData }}>
+      <ResturantContext.Provider value={{ resturant, setResturan }}>
+        {props.children}
+      </ResturantContext.Provider>
+    </AppContext.Provider>
+  );
+};
+
+export default AppState;

@@ -27,7 +27,7 @@ const HomeCards = () => {
         </div>
         {/* Dining Card */}
         <div className="dining-card w-[20rem] h-56 rounded-2xl cursor-pointer border border-black border-opacity-50 m-4 overflow-hidden ">
-          <Link to="/test">
+          <Link to="/dine-out">
             <div>
               <div className="logo h-full">
                 <img
@@ -47,7 +47,7 @@ const HomeCards = () => {
         </div>
         {/* Nightlife Card */}
         <div className="delivery-card w-[20rem] h-56 rounded-2xl cursor-pointer border border-black border-opacity-50 m-4 overflow-hidden ">
-          <Link to="test2">
+          <Link to="/nightlife">
             <div>
               <div className="logo h-full">
                 <img
