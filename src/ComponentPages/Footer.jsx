@@ -10,7 +10,7 @@ const Footer = () => {
         <div className="mt-10 flex justify-center  items-center">
           <img
             className="w-40 flex justify-center items-center"
-            src="../../public/logo.avif"
+            src="/logo.avif"
             alt=""
           />
         </div>

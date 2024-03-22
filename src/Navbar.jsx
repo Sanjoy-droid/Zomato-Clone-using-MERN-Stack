@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -39,13 +39,17 @@ const Navbar = () => {
         {/* Buttons */}
         <div className="flex justify-center items-center space-x-4 ml-12 text-lg text-gray-800">
           {/* Login */}
-          <button className="login transition-opacity duration-300 hover:opacity-50">
-            Log in
-          </button>
+          <Link to="/login">
+            <button className="login transition-opacity duration-300 hover:opacity-50">
+              Log in
+            </button>
+          </Link>
           {/* Sign Up*/}
-          <button className="signup transition-opacity duration-300 hover:opacity-50">
-            Sign up
-          </button>
+          <Link to="/signup">
+            <button className="signup transition-opacity duration-300 hover:opacity-50">
+              Sign up
+            </button>
+          </Link>
         </div>
       </div>
     </>

@@ -11,7 +11,7 @@ const AppState = (props) => {
       discount: 20,
       price: 180,
       time: 25,
-      image: "../../../public/img1.avif",
+      image: " /img1.avif",
     },
     {
       id: 4,
@@ -21,7 +21,7 @@ const AppState = (props) => {
       discount: 15,
       price: 300,
       time: 45,
-      image: "../../../public/img2.avif",
+      image: "/img2.avif",
     },
     {
       id: 5,
@@ -32,7 +32,7 @@ const AppState = (props) => {
       discount: 30,
       price: 150,
       time: 30,
-      image: "../../../public/img3.avif",
+      image: " /img3.avif",
     },
     {
       id: 6,
@@ -42,7 +42,7 @@ const AppState = (props) => {
       discount: 25,
       price: 200,
       time: 35,
-      image: "../../../public/img4.avif",
+      image: " /img4.avif",
     },
     {
       id: 7,
@@ -53,7 +53,7 @@ const AppState = (props) => {
       discount: 10,
       price: 220,
       time: 40,
-      image: "../../../public/img5.avif",
+      image: " /img5.avif",
     },
     {
       id: 8,
@@ -63,7 +63,7 @@ const AppState = (props) => {
       discount: 20,
       price: 280,
       time: 50,
-      image: "../../../public/img6.avif",
+      image: " /img6.avif",
     },
     {
       id: 9,
@@ -74,7 +74,7 @@ const AppState = (props) => {
       discount: 15,
       price: 190,
       time: 30,
-      image: "../../../public/img7.avif",
+      image: " /img7.avif",
     },
     {
       id: 10,
@@ -85,7 +85,7 @@ const AppState = (props) => {
       discount: 25,
       price: 320,
       time: 55,
-      image: "../../../public/img8.avif",
+      image: " /img8.avif",
     },
     {
       id: 11,
@@ -95,7 +95,7 @@ const AppState = (props) => {
       discount: 15,
       price: 250,
       time: 40,
-      image: "../../../public/img9.avif",
+      image: " /img9.avif",
     },
     {
       id: 12,
@@ -106,7 +106,7 @@ const AppState = (props) => {
       discount: 20,
       price: 280,
       time: 45,
-      image: "../../../public/img10.avif",
+      image: " /img10.avif",
     },
     {
       id: 13,
@@ -117,7 +117,7 @@ const AppState = (props) => {
       discount: 10,
       price: 200,
       time: 35,
-      image: "../../../public/img11.avif",
+      image: " /img11.avif",
     },
     {
       id: 14,
@@ -128,7 +128,7 @@ const AppState = (props) => {
       discount: 30,
       price: 300,
       time: 50,
-      image: "../../../public/img12.avif",
+      image: " /img12.avif",
     },
     {
       id: 15,
@@ -139,7 +139,7 @@ const AppState = (props) => {
       discount: 25,
       price: 270,
       time: 42,
-      image: "../../../public/img13.avif",
+      image: " /img13.avif",
     },
     {
       id: 16,
@@ -150,7 +150,7 @@ const AppState = (props) => {
       discount: 20,
       price: 260,
       time: 38,
-      image: "../../../public/img14.avif",
+      image: " /img14.avif",
     },
     {
       id: 17,
@@ -161,7 +161,7 @@ const AppState = (props) => {
       discount: 15,
       price: 290,
       time: 48,
-      image: "../../../public/img15.avif",
+      image: " /img15.avif",
     },
   ];
 
@@ -174,7 +174,7 @@ const AppState = (props) => {
       rating: 4.8,
       price: 1800,
       distance: 25,
-      image: "../../../public/resturant images/img1.avif",
+      image: "/resturant images/img1.avif",
     },
     {
       id: 2,
@@ -184,7 +184,7 @@ const AppState = (props) => {
       rating: 4.7,
       price: 3000,
       distance: 10,
-      image: "../../../public/resturant images/img2.avif",
+      image: " /img2.avif",
     },
     {
       id: 3,
@@ -194,7 +194,7 @@ const AppState = (props) => {
       rating: 4.2,
       price: 1500,
       distance: 20,
-      image: "../../../public/resturant images/img3.avif",
+      image: " /img3.avif",
     },
     {
       id: 4,
@@ -204,7 +204,7 @@ const AppState = (props) => {
       rating: 4.5,
       price: 2500,
       distance: 15,
-      image: "../../../public/resturant images/img4.avif",
+      image: " /img4.avif",
     },
     {
       id: 5,
@@ -214,7 +214,7 @@ const AppState = (props) => {
       rating: 4.6,
       price: 1200,
       distance: 18,
-      image: "../../../public/resturant images/img5.avif",
+      image: " /img5.avif",
     },
     {
       id: 6,
@@ -224,7 +224,7 @@ const AppState = (props) => {
       rating: 4.9,
       price: 1800,
       distance: 12,
-      image: "../../../public/resturant images/img6.avif",
+      image: " /img6.avif",
     },
     {
       id: 7,
@@ -234,7 +234,7 @@ const AppState = (props) => {
       rating: 4.3,
       price: 1000,
       distance: 22,
-      image: "../../../public/resturant images/img7.avif",
+      image: " /img7.avif",
     },
     {
       id: 8,
@@ -244,7 +244,7 @@ const AppState = (props) => {
       rating: 4.8,
       price: 2000,
       distance: 8,
-      image: "../../../public/resturant images/img8.avif",
+      image: " /img8.avif",
     },
     {
       id: 9,
@@ -254,7 +254,7 @@ const AppState = (props) => {
       rating: 4.7,
       price: 2200,
       distance: 14,
-      image: "../../../public/resturant images/img9.avif",
+      image: " /img9.avif",
     },
     {
       id: 10,
@@ -264,7 +264,7 @@ const AppState = (props) => {
       rating: 4.4,
       price: 2800,
       distance: 30,
-      image: "../../../public/resturant images/img10.avif",
+      image: " /img10.avif",
     },
     {
       id: 11,
@@ -274,7 +274,7 @@ const AppState = (props) => {
       rating: 4.6,
       price: 1900,
       distance: 25,
-      image: "../../../public/resturant images/img11.avif",
+      image: " /img11.avif",
     },
     {
       id: 12,
@@ -284,7 +284,7 @@ const AppState = (props) => {
       rating: 4.9,
       price: 1500,
       distance: 17,
-      image: "../../../public/resturant images/img12.avif",
+      image: " /img12.avif",
     },
   ];
 

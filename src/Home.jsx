@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import Footer from "./ComponentPages/Footer";
 import HomeCards from "./HomeCards";
 const Home = () => {
@@ -14,12 +15,16 @@ const Home = () => {
         {/* Navigation */}
         <div className="absolute top-4 right-4 flex justify-end items-end">
           <ul className="flex gap-4 text-xl mr-8 text-white">
-            <li className=" cursor-pointer transition-opacity duration-300 hover:opacity-50">
-              Login
-            </li>
-            <li className="cursor-pointer transition-opacity duration-300 hover:opacity-50 ">
-              Sign up
-            </li>
+            <Link to="/login">
+              <li className=" cursor-pointer transition-opacity duration-300 hover:opacity-50">
+                Login
+              </li>
+            </Link>
+            <Link to="/signup">
+              <li className="cursor-pointer transition-opacity duration-300 hover:opacity-50 ">
+                Sign up
+              </li>
+            </Link>
           </ul>
         </div>
 

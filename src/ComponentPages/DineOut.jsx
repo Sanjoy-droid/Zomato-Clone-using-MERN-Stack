@@ -52,7 +52,7 @@ const DineOut = () => {
           <div className="nightlife flex items-center space-x-4 cursor-pointer">
             <img
               className="w-12 h-12 p-2 rounded-full grayscale "
-              src="../../public/night1.webp"
+              src="/night1.webp"
               alt=""
             />
             <p className="text-gray-800">Nightlife</p>
