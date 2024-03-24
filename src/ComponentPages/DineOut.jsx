@@ -1,24 +1,63 @@
 import { Link, useLocation } from "react-router-dom";
 import Navbar from "../Navbar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTruck, faUtensils } from "@fortawesome/free-solid-svg-icons";
-import { faMoon } from "@fortawesome/free-regular-svg-icons";
-import { useContext } from "react";
+import { faCircleXmark, faL } from "@fortawesome/free-solid-svg-icons";
+
+import { useContext, useState } from "react";
 import resturantContext from "../context/GlobalContext/ResturantContext";
 import ResturantCards from "./Dining Out/ResturantCards";
 import Footer from "./Footer";
 
-const DineOut = () => {
+const DineOut = ({ showAlert }) => {
   const location = useLocation();
 
   const isDeliveryPage = location.pathname === "/dine-out";
-  const context = useContext(resturantContext);
 
+  const context = useContext(resturantContext);
   const { resturant, setResturant } = context;
+
+  // Rating
+  const [isRating, setIsRating] = useState(false);
+  const handleRating = () => {
+    setIsRating(!isRating);
+  };
+
+  // Open Now
+  const [isOpen, setIsOpen] = useState(false);
+  const handleOpen = () => {
+    setIsOpen(!isOpen);
+  };
+
+  // Outdoor Seating
+  const [isOutdoor, setIsOutdoor] = useState(false);
+  const handleOutdoor = () => {
+    setIsOutdoor(!isOutdoor);
+  };
+
+  // Filter data based on rating, open now, and outdoor seating options
+  const filteredData = resturant.filter((item) => {
+    // Check if the item passes the rating filter if isRating is true
+    if (isRating && item.rating < 4.0) {
+      return false; // Exclude items with rating less than 4.0
+    }
+
+    // Check if the item passes the open now filter if isOpen is true
+    if (isOpen && !item.openNow) {
+      return false; // Exclude items that are not open now
+    }
+
+    // Check if the item passes the outdoor seating filter if isOutdoor is true
+    if (isOutdoor && !item.outdoorSeating) {
+      return false; // Exclude items that do not have outdoor seating
+    }
+
+    // Include the item if it passes all filters
+    return true;
+  });
 
   return (
     <>
-      <Navbar />
+      <Navbar showAlert={showAlert} />
       {/* Different Sections Bar */}
       <div className="sections mt-14 ml-8 flex items-center space-x-12 font-semibold text-lg ">
         {/* Delevery */}
@@ -66,34 +105,92 @@ const DineOut = () => {
         {/* Filters*/}
         <div className="filters border-2 border-gray-400 rounded-lg  cursor-pointer ">
           <pre>
-            <p className="font-sans text-sm p-1 text-gray-900">Filters</p>
-          </pre>
-        </div>
-        {/* Rating */}
-        <div className="Rating   border-2 border-gray-400 rounded-lg  cursor-pointer">
-          <pre>
-            <p className="font-sans text-sm p-1 text-gray-900">Rating 4.0+</p>
-          </pre>
-        </div>
-        {/* Pure Veg*/}
-        <div className="pure-veg border-2 border-gray-400 rounded-lg  cursor-pointer">
-          <pre>
-            <p className="font-sans text-sm p-1 text-gray-900">
-              Outdoor Sitting
+            <p className="font-sans text-sm w-[5rem] p-1 text-gray-900 flex justify-center">
+              {isRating || isOpen || isOutdoor ? (
+                <>
+                  <p className="text-base flex justify-evenly items-center">
+                    <span className="bg-red-400 flex justify-center rounded-md w-6">
+                      {(isRating ? 1 : 0) +
+                        (isOpen ? 1 : 0) +
+                        (isOutdoor ? 1 : 0)}
+                    </span>
+                    <span>Filters</span>
+                  </p>
+                </>
+              ) : (
+                "Filters"
+              )}
             </p>
           </pre>
         </div>
-        {/* Cuisines */}
-        <div className="cuisines  border-2 border-gray-400 rounded-lg cursor-pointer ">
+        {/* Rating */}
+        <div
+          onClick={handleRating}
+          className={`Rating border-2 border-gray-400 rounded-lg cursor-pointer ${
+            isRating ? "bg-red-400 " : ""
+          }`}
+        >
           <pre>
-            <p className="font-sans text-sm p-1 text-gray-900">Open Now</p>
+            <p className="font-sans text-sm p-1 text-gray-900">
+              {isRating ? (
+                <>
+                  <p className="text-base">
+                    Rating 4.0+ <FontAwesomeIcon icon={faCircleXmark} />
+                  </p>
+                </>
+              ) : (
+                "Rating 4.0+"
+              )}
+            </p>
+          </pre>
+        </div>
+        {/* Outdoor Seating*/}
+        <div
+          onClick={handleOutdoor}
+          className={`outdoor border-2 border-gray-400 rounded-lg  cursor-pointer ${
+            isOutdoor ? "bg-red-400" : ""
+          }`}
+        >
+          <pre>
+            <p className="font-sans text-sm p-1 text-gray-900">
+              {isOutdoor ? (
+                <>
+                  <p className="text-base">
+                    Outdoor Seating <FontAwesomeIcon icon={faCircleXmark} />
+                  </p>
+                </>
+              ) : (
+                "Outdoor Seating"
+              )}
+            </p>
+          </pre>
+        </div>
+        {/* Open Now */}
+        <div
+          onClick={handleOpen}
+          className={`Open border-2 border-gray-400 rounded-lg cursor-pointer ${
+            isOpen ? "bg-red-400 " : ""
+          }`}
+        >
+          <pre>
+            <p className="font-sans text-sm p-1 text-gray-900">
+              {isOpen ? (
+                <>
+                  <p className="text-base">
+                    Open Now <FontAwesomeIcon icon={faCircleXmark} />
+                  </p>
+                </>
+              ) : (
+                "Open Now"
+              )}
+            </p>
           </pre>
         </div>
       </div>
 
       {/* Resturants Listing */}
       <div className="container m-0 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-6 p-6">
-        {resturant.map((item) => (
+        {filteredData.map((item) => (
           <ResturantCards key={item.id} item={item} />
         ))}
       </div>

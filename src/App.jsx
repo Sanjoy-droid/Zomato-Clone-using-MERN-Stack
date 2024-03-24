@@ -1,7 +1,14 @@
 // App.jsx
 
 import "./App.css";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useLocation,
+} from "react-router-dom";
+
+import { useState } from "react";
 
 import Home from "./Home";
 import Delivery from "./ComponentPages/Delivery";
@@ -10,25 +17,59 @@ import AppState from "./context/GlobalContext/AppState";
 import Nightlife from "./ComponentPages/Nightlife";
 import SignupModal from "./ComponentPages/Login Signup/SignupModal";
 import LoginModal from "./ComponentPages/Login Signup/LoginModal";
+import Alert from "./ComponentPages/Alerts";
+import Navbar from "./Navbar";
 
 function App() {
+  const [alert, setAlert] = useState(null);
+  const showAlert = (message, type) => {
+    setAlert({
+      msg: message,
+      type: type,
+    });
+    setTimeout(() => {
+      console.log("Timeout executed");
+      setAlert(null);
+    }, 1500);
+  };
+
   return (
     <>
-      <AppState>
-        <Router>
+      <Router>
+        <AppState>
+          <Alert alert={alert} setAlert={setAlert} />
+
+          {/* <RenderNavbar showAlert={showAlert} /> */}
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route exact path="/order-online" element={<Delivery />} />
-            <Route exact path="/dine-out" element={<DineOut />} />
-            <Route exact path="/nightlife" element={<Nightlife />} />
-
-            {/* Login */}
-            <Route exact path="/login" element={<LoginModal />} />
-            {/* Signup */}
-            <Route exact path="/signup" element={<SignupModal />} />
+            <Route
+              exact
+              path="/order-online"
+              element={<Delivery showAlert={showAlert} />}
+            />
+            <Route
+              exact
+              path="/dine-out"
+              element={<DineOut showAlert={showAlert} />}
+            />
+            <Route
+              exact
+              path="/nightlife"
+              element={<Nightlife showAlert={showAlert} />}
+            />
+            <Route
+              exact
+              path="/login"
+              element={<LoginModal showAlert={showAlert} />}
+            />
+            <Route
+              exact
+              path="/signup"
+              element={<SignupModal showAlert={showAlert} />}
+            />
           </Routes>
-        </Router>
-      </AppState>
+        </AppState>
+      </Router>
     </>
   );
 }

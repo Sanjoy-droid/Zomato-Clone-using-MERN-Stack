@@ -3,18 +3,19 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 
-const Signup = () => {
+const Signup = (props) => {
   let navigate = useNavigate();
-
-  const onChange = (e) => {
-    setCredentials({ ...credentials, [e.target.name]: e.target.value });
-  };
 
   const [credentials, setCredentials] = useState({
     name: "",
     email: "",
     password: "",
   });
+
+  const onChange = (e) => {
+    setCredentials({ ...credentials, [e.target.name]: e.target.value });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { name, email, password } = credentials;
@@ -30,13 +31,12 @@ const Signup = () => {
       }),
     });
     const json = await response.json();
-    console.log(json);
     if (json.success) {
-      // redirect
       localStorage.setItem("token", json.authtoken);
+      props.showAlert("Logged In Successfully", "success");
       navigate("/");
     } else {
-      alert("Invalid Credentials");
+      props.showAlert("Invalid Credentials", "Error!!!");
     }
   };
   return (

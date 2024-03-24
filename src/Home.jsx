@@ -15,16 +15,25 @@ const Home = () => {
         {/* Navigation */}
         <div className="absolute top-4 right-4 flex justify-end items-end">
           <ul className="flex gap-4 text-xl mr-8 text-white">
-            <Link to="/login">
-              <li className=" cursor-pointer transition-opacity duration-300 hover:opacity-50">
-                Login
-              </li>
-            </Link>
-            <Link to="/signup">
-              <li className="cursor-pointer transition-opacity duration-300 hover:opacity-50 ">
-                Sign up
-              </li>
-            </Link>
+            {/* Login */}
+            {!localStorage.getItem("token") ? (
+              <>
+                {/* Login */}
+                <Link to="/login">
+                  <li className=" cursor-pointer transition-opacity duration-300 hover:opacity-50">
+                    Login
+                  </li>
+                </Link>
+                {/* Signup */}
+                <Link to="/signup">
+                  <li className="cursor-pointer transition-opacity duration-300 hover:opacity-50 ">
+                    Sign up
+                  </li>
+                </Link>
+              </>
+            ) : (
+              <></>
+            )}
           </ul>
         </div>
 

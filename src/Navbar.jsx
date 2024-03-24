@@ -2,9 +2,16 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { Link, useNavigate } from "react-router-dom";
 
-const Navbar = () => {
+const Navbar = ({ showAlert }) => {
   const navigate = useNavigate();
   const handleClick = () => {
+    navigate("/");
+  };
+
+  // Log out button onclick event
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    showAlert("Logged Out Successfully", "success");
     navigate("/");
   };
   return (
@@ -39,17 +46,30 @@ const Navbar = () => {
         {/* Buttons */}
         <div className="flex justify-center items-center space-x-4 ml-12 text-lg text-gray-800">
           {/* Login */}
-          <Link to="/login">
-            <button className="login transition-opacity duration-300 hover:opacity-50">
-              Log in
+          {!localStorage.getItem("token") ? (
+            <Link to="/login">
+              <button className="login transition-opacity duration-300 hover:opacity-50">
+                Log in
+              </button>
+            </Link>
+          ) : (
+            <button
+              className="btn w-[5rem] h-[2.6rem] bg-rose-700 text-white  font-medium flex justify-center items-center text-sm rounded-xl mx-2 cursor-pointer hover:bg-rose-800"
+              onClick={handleLogout}
+            >
+              Log Out
             </button>
-          </Link>
+          )}
           {/* Sign Up*/}
-          <Link to="/signup">
-            <button className="signup transition-opacity duration-300 hover:opacity-50">
-              Sign up
-            </button>
-          </Link>
+          {!localStorage.getItem("token") ? (
+            <Link to="/signup">
+              <button className="signup transition-opacity duration-300 hover:opacity-50">
+                Sign up
+              </button>
+            </Link>
+          ) : (
+            <></>
+          )}
         </div>
       </div>
     </>

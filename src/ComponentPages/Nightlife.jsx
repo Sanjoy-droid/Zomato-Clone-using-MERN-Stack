@@ -1,14 +1,14 @@
 import { Link, useLocation } from "react-router-dom";
 import Navbar from "../Navbar";
 
-const Nightlife = () => {
+const Nightlife = ({ showAlert }) => {
   const location = useLocation();
 
   const isDeliveryPage = location.pathname === "/nightlife";
 
   return (
     <>
-      <Navbar />
+      <Navbar showAlert={showAlert} />
       {/* Different Sections Bar */}
       <div className="sections mt-14 ml-8 flex items-center space-x-12 font-semibold text-lg ">
         {/* Delevery */}

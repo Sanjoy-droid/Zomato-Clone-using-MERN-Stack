@@ -27,6 +27,7 @@ hover:border-2 hover:border-solid hover:border-gray-200 text-black"
               {/* Title  */}
               <div className="flex items-center justify-between text-base">
                 <h1 className="title  ">{item.title}</h1>
+
                 <p className="text-sm text-white bg-green-700 rounded-md w-10 h-5 flex justify-center items-center ">
                   {item.rating} <span>&#9733;</span>
                 </p>
