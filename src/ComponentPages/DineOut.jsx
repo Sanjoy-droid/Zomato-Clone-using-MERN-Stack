@@ -34,7 +34,7 @@ const DineOut = ({ showAlert }) => {
     setIsOutdoor(!isOutdoor);
   };
 
-  // Filter data based on rating, open now, and outdoor seating options
+  // Filter resturants based on rating, open now, and outdoor seating options
   const filteredData = resturant.filter((item) => {
     // Check if the item passes the rating filter if isRating is true
     if (isRating && item.rating < 4.0) {

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import AppContext from "./appContext";
 import ResturantContext from "./ResturantContext";
+import NightlifeContext from "./nightlifeContext";
 const AppState = (props) => {
   const dataInitial = [
     {
@@ -23,7 +24,7 @@ const AppState = (props) => {
       price: 300,
       time: 45,
       image: "/img2.avif",
-      veg: true,
+      veg: false,
     },
     {
       id: 5,
@@ -34,7 +35,7 @@ const AppState = (props) => {
       price: 150,
       time: 30,
       image: "/img3.avif",
-      veg: false,
+      veg: true,
     },
     {
       id: 6,
@@ -67,7 +68,7 @@ const AppState = (props) => {
       price: 280,
       time: 50,
       image: "/img6.avif",
-      veg: true,
+      veg: false,
     },
     {
       id: 9,
@@ -78,7 +79,7 @@ const AppState = (props) => {
       price: 190,
       time: 30,
       image: "/img7.avif",
-      veg: false,
+      veg: true,
     },
     {
       id: 10,
@@ -89,7 +90,7 @@ const AppState = (props) => {
       price: 320,
       time: 55,
       image: "/img8.avif",
-      veg: true,
+      veg: false,
     },
     {
       id: 11,
@@ -100,7 +101,7 @@ const AppState = (props) => {
       price: 250,
       time: 40,
       image: "/img9.avif",
-      veg: false,
+      veg: true,
     },
     {
       id: 12,
@@ -111,7 +112,7 @@ const AppState = (props) => {
       price: 280,
       time: 45,
       image: "/img10.avif",
-      veg: true,
+      veg: false,
     },
     {
       id: 13,
@@ -122,7 +123,7 @@ const AppState = (props) => {
       price: 200,
       time: 35,
       image: "/img11.avif",
-      veg: false,
+      veg: true,
     },
     {
       id: 14,
@@ -133,7 +134,7 @@ const AppState = (props) => {
       price: 300,
       time: 50,
       image: "/img12.avif",
-      veg: true,
+      veg: false,
     },
     {
       id: 15,
@@ -155,7 +156,7 @@ const AppState = (props) => {
       price: 260,
       time: 38,
       image: "/img14.avif",
-      veg: true,
+      veg: false,
     },
     {
       id: 17,
@@ -318,12 +319,200 @@ const AppState = (props) => {
     },
   ];
 
+  const nightlife = [
+    {
+      id: 1,
+      name: "Pepe Rosa",
+      address: "Camac Street",
+      situated: "Street Area",
+      rating: 3.8,
+      price: 1800,
+      distance: 25,
+      image: "nightlife images/pic2.avif",
+      openNow: true,
+      outdoorSeating: false,
+      gold: true,
+    },
+    {
+      id: 5,
+      name: "Sunset Grill",
+      address: "789 Beach Boulevard",
+      situated: "Seaside",
+      rating: 4.7,
+      price: 2500,
+      distance: 30,
+      image: "nightlife images/pic3.avif",
+      openNow: true,
+      outdoorSeating: true,
+      gold: false,
+    },
+    {
+      id: 6,
+      name: "Coffee Haven",
+      address: "321 Park Avenue",
+      situated: "Park District",
+      rating: 4.4,
+      price: 1200,
+      distance: 5,
+      image: "nightlife images/pic4.avif",
+      openNow: true,
+      outdoorSeating: true,
+      gold: false,
+    },
+    {
+      id: 7,
+      name: "Downtown Diner",
+      address: "456 Maple Street",
+      situated: "Downtown",
+      rating: 4.6,
+      price: 1800,
+      distance: 10,
+      image: "nightlife images/pic5.avif",
+      openNow: true,
+      outdoorSeating: false,
+      gold: true,
+    },
+    {
+      id: 8,
+      name: "Ocean's Edge",
+      address: "123 Coastline Drive",
+      situated: "Oceanfront",
+      rating: 4.9,
+      price: 2200,
+      distance: 15,
+      image: "nightlife images/pic6.avif",
+      openNow: true,
+      outdoorSeating: true,
+      gold: false,
+    },
+    {
+      id: 9,
+      name: "Moonlight Lounge",
+      address: "789 Crescent Avenue",
+      situated: "Rooftop",
+      rating: 4.5,
+      price: 2000,
+      distance: 20,
+      image: "nightlife images/pic7.avif",
+      openNow: true,
+      outdoorSeating: false,
+      gold: true,
+    },
+    {
+      id: 10,
+      name: "Starlight Bistro",
+      address: "567 Galaxy Road",
+      situated: "Skyline",
+      rating: 4.7,
+      price: 2400,
+      distance: 25,
+      image: "nightlife images/pic8.avif",
+      openNow: true,
+      outdoorSeating: true,
+      gold: false,
+    },
+    {
+      id: 11,
+      name: "Sunrise Café",
+      address: "890 Dawn Drive",
+      situated: "Sunrise Point",
+      rating: 4.6,
+      price: 1900,
+      distance: 10,
+      image: "nightlife images/pic9.avif",
+      openNow: true,
+      outdoorSeating: false,
+      gold: true,
+    },
+    {
+      id: 12,
+      name: "Lakeside Retreat",
+      address: "234 Lakeview Terrace",
+      situated: "Lakeside",
+      rating: 4.8,
+      price: 2100,
+      distance: 12,
+      image: "nightlife images/pic10.avif",
+      openNow: true,
+      outdoorSeating: true,
+      gold: false,
+    },
+    {
+      id: 13,
+      name: "Mountain View Grill",
+      address: "345 Summit Avenue",
+      situated: "Mountaintop",
+      rating: 4.6,
+      price: 2300,
+      distance: 18,
+      image: "nightlife images/pic11.avif",
+      openNow: true,
+      outdoorSeating: true,
+      gold: true,
+    },
+    {
+      id: 14,
+      name: "Parkside Pub",
+      address: "678 Park Street",
+      situated: "Parkside",
+      rating: 4.4,
+      price: 1800,
+      distance: 8,
+      image: "nightlife images/pic12.avif",
+      openNow: true,
+      outdoorSeating: false,
+      gold: false,
+    },
+    {
+      id: 15,
+      name: "Riverfront Café",
+      address: "901 River Road",
+      situated: "Riverfront",
+      rating: 4.7,
+      price: 1950,
+      distance: 13,
+      image: "nightlife images/pic13.avif",
+      openNow: true,
+      outdoorSeating: true,
+      gold: true,
+    },
+    {
+      id: 16,
+      name: "Cityscape Lounge",
+      address: "123 Metropolitan Avenue",
+      situated: "City Center",
+      rating: 4.5,
+      price: 2050,
+      distance: 14,
+      image: "nightlife images/pic14.avif",
+      openNow: true,
+      outdoorSeating: false,
+      gold: false,
+    },
+    {
+      id: 17,
+      name: "Garden Terrace",
+      address: "567 Blossom Boulevard",
+      situated: "Garden District",
+      rating: 4.8,
+      price: 2150,
+      distance: 17,
+      image: "nightlife images/pic15.avif",
+      openNow: true,
+      outdoorSeating: true,
+      gold: true,
+    },
+  ];
+
   const [data, setData] = useState(dataInitial);
   const [resturant, setResturan] = useState(resturants);
+  const [nightlifes, setNightlifes] = useState(nightlife);
   return (
     <AppContext.Provider value={{ data, setData }}>
       <ResturantContext.Provider value={{ resturant, setResturan }}>
-        {props.children}
+        <NightlifeContext.Provider value={{ nightlifes, setNightlifes }}>
+          {props.children}
+        </NightlifeContext.Provider>
       </ResturantContext.Provider>
     </AppContext.Provider>
   );

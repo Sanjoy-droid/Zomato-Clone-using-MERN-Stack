@@ -164,12 +164,6 @@ const Delivery = ({ showAlert }) => {
             </p>
           </pre>
         </div>
-        {/* Cuisines */}
-        <div className="cuisines  border-2 border-gray-400 rounded-lg cursor-pointer ">
-          <pre>
-            <p className="font-sans text-sm p-1 text-gray-900">Cuisines </p>
-          </pre>
-        </div>
       </div>
 
       {/* Products */}
