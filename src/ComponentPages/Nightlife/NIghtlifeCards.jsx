@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCrown } from "@fortawesome/free-solid-svg-icons";
-const NIghtlifeCards = (props) => {
+const NightlifeCards = (props) => {
   const { item } = props;
 
   return (
@@ -54,4 +54,4 @@ hover:border-2 hover:border-solid hover:border-gray-200 text-black"
   );
 };
 
-export default NIghtlifeCards;
+export default NightlifeCards;

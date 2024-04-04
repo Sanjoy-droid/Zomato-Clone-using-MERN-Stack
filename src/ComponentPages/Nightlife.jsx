@@ -1,11 +1,12 @@
 import { Link, useLocation } from "react-router-dom";
 import { useState, useContext } from "react";
 import Navbar from "../Navbar";
-import NIghtlifeCards from "./Nightlife/NIghtlifeCards";
 import nightlifeContext from "../context/GlobalContext/nightlifeContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCrown } from "@fortawesome/free-solid-svg-icons";
+import { faCrown, faCircleXmark } from "@fortawesome/free-solid-svg-icons";
 import Footer from "./Footer";
+import NightFilterModal from "./Nightlife/NightFilterModal";
+import NightlifeCards from "./Nightlife/NightlifeCards";
 
 const Nightlife = ({ showAlert }) => {
   const location = useLocation();
@@ -27,18 +28,58 @@ const Nightlife = ({ showAlert }) => {
     setIsGold(!isGold);
   };
 
-  const filteredData = nightlifes.filter((item) => {
-    // Check if the item passes the rating filter if isRating is true
-    if (isRating && item.rating < 4.0) {
-      return false; // Exclude items with rating less than 4.0
-    }
+  const [rating, setRating] = useState(null);
+  const [sortBy, setSortBy] = useState("");
 
-    // Check if the item passes the gold filter if gold is true
-    if (isGold && !item.gold) {
-      return false;
-    }
-    return true;
-  });
+  // Filter resturants based on rating, open now, and outdoor seating options
+
+  const [showFilter, setShowFilter] = useState(false);
+
+  const toggleFilter = () => {
+    setShowFilter(!showFilter);
+  };
+
+  // Get Actual Rating Value from filter
+  const filterRatingValue = (element) => {
+    setRating(element);
+  };
+
+  // Get Actual Sortby Value from filter
+  const filterSortByValue = (element) => {
+    setSortBy(element);
+  };
+
+  const filteredData = nightlifes
+    .filter((item) => {
+      if (rating && item.rating < rating) {
+        return false; // Exclude items with rating less than selected rating
+      }
+      // Check if the item passes the rating filter if isRating is true
+      if (isRating && item.rating < 4.0) {
+        return false; // Exclude items with rating less than 4.0
+      }
+
+      // Check if the item passes the gold filter if gold is true
+      if (isGold && !item.gold) {
+        return false;
+      }
+      return true;
+    })
+    .sort((a, b) => {
+      // Sorting logic based on sortBy value
+      switch (sortBy) {
+        case "Rating: High to Low":
+          return b.rating - a.rating; // Sort by rating from high to low
+        case "Distance":
+          return a.distance - b.distance;
+        case "Cost: Low to High":
+          return a.price - b.price;
+        case "Cost: High to Low":
+          return b.price - a.price;
+        default:
+          return 0; // Default sorting
+      }
+    });
 
   return (
     <>
@@ -87,24 +128,75 @@ const Nightlife = ({ showAlert }) => {
 
       {/* Filters */}
       <div className="filters flex items-center pl-8  w-full h-16 bg-white  space-x-4 sticky top-0 z-10">
-        {/* Filters*/}
-
-        <div className="filters border-2 border-gray-400 rounded-lg  cursor-pointer w-[5rem] ">
-          <pre className="font-sans text-sm p-1 text-gray-900 flex justify-center">
-            {isGold || isRating ? (
-              <>
-                <span className="bg-red-400 flex justify-center rounded-md w-6 text-base items-center">
-                  {(isRating ? 1 : 0) + (isGold ? 1 : 0)}
-                </span>
-                <span>Filters</span>
-              </>
-            ) : (
-              "Filters"
-            )}
+        <div
+          onClick={() => {
+            toggleFilter();
+          }}
+          className="filters border-2 border-gray-400 rounded-lg  cursor-pointer "
+        >
+          <pre>
+            <p className="font-sans text-sm w-[5rem] p-1 text-gray-900 flex justify-center">
+              {
+                isRating || isGold || rating || sortBy ? ( // Check if any condition is true
+                  <>
+                    <span className="bg-red-400 flex justify-center rounded-md w-6">
+                      {" "}
+                      {(isRating ? 1 : 0) +
+                        (isGold ? 1 : 0) +
+                        (rating ? 1 : 0) +
+                        (sortBy ? 1 : 0)}
+                    </span>
+                    <span> Filters</span>
+                  </>
+                ) : (
+                  <span>Filters</span>
+                ) // If all conditions are false, don't apply red coloring
+              }
+            </p>
           </pre>
+          <NightFilterModal
+            showFilter={showFilter}
+            toggleFilter={toggleFilter}
+            filterRatingValue={filterRatingValue}
+            filterSortByValue={filterSortByValue}
+          />
         </div>
+        {/* Filter Custom Sort By */}
+        {sortBy && (
+          <button
+            onClick={() => {
+              setSortBy("");
+            }}
+            className="sort-by border-2 border-gray-400 w-48 h-8 rounded-lg flex items-center justify-center bg-red-400 text-gray-900"
+          >
+            <span className="font-sans text-sm flex justify-center items-center">
+              <>
+                <span className="text-base">
+                  {sortBy} <FontAwesomeIcon icon={faCircleXmark} />
+                </span>
+              </>
+            </span>
+          </button>
+        )}
+        {/* Filter Custom Rating */}
+        {rating && (
+          <button
+            onClick={() => {
+              setRating(null);
+            }}
+            className="sort-by border-2 border-gray-400 w-52 h-8 rounded-lg flex items-center justify-center bg-red-400 text-gray-900"
+          >
+            <span className="font-sans text-sm flex justify-center items-center">
+              <>
+                <span className="text-base">
+                  Custom Rating: {rating} +{" "}
+                  <FontAwesomeIcon icon={faCircleXmark} />
+                </span>
+              </>
+            </span>
+          </button>
+        )}
 
-        {/* Rating */}
         <div
           className={`Rating   border-2 border-gray-400 rounded-lg  cursor-pointer ${
             isRating ? "bg-red-400" : ""
@@ -133,7 +225,7 @@ const Nightlife = ({ showAlert }) => {
 
       <div className="container m-0 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-6 p-4">
         {filteredData.map((item) => (
-          <NIghtlifeCards key={item.id} item={item} />
+          <NightlifeCards key={item.id} item={item} />
         ))}
       </div>
       <Footer />

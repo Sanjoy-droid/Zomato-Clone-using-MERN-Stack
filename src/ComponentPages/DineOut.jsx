@@ -143,7 +143,7 @@ const DineOut = ({ showAlert }) => {
       {/* Filters */}
       <div className="filters flex items-center pl-8  w-full h-16 bg-white  space-x-4 sticky top-0 z-10">
         {/* Filters*/}
-        <button
+        <div
           onClick={() => {
             toggleFilter();
           }}
@@ -176,7 +176,7 @@ const DineOut = ({ showAlert }) => {
             filterRatingValue={filterRatingValue}
             filterSortByValue={filterSortByValue}
           />
-        </button>
+        </div>
         {/* Filter Custom Sort By */}
         {sortBy && (
           <button
@@ -200,12 +200,13 @@ const DineOut = ({ showAlert }) => {
             onClick={() => {
               setRating(null);
             }}
-            className="sort-by border-2 border-gray-400 w-16 h-8 rounded-lg flex items-center justify-center bg-red-400 text-gray-900"
+            className="sort-by border-2 border-gray-400 w-52 h-8 rounded-lg flex items-center justify-center bg-red-400 text-gray-900"
           >
             <span className="font-sans text-sm flex justify-center items-center">
               <>
                 <span className="text-base">
-                  {rating} <FontAwesomeIcon icon={faCircleXmark} />
+                  Custom Rating: {rating} +{" "}
+                  <FontAwesomeIcon icon={faCircleXmark} />
                 </span>
               </>
             </span>
