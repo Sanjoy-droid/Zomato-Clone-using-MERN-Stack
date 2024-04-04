@@ -8,6 +8,8 @@ import appContext from "../context/GlobalContext/appContext";
 import Navbar from "../Navbar";
 import Cards from "./Cards";
 import Footer from "./Footer";
+import FilterModal from "./FilterModal";
+
 const Delivery = ({ showAlert }) => {
   const location = useLocation();
 
@@ -30,30 +32,72 @@ const Delivery = ({ showAlert }) => {
     setIsVeg(!isVeg);
   };
 
-  // Filter data based on rating and vegetarian options
-  const filteredData = data.filter((item) => {
-    // Check if the item passes the rating filter if isRating is true
-    if (isRating && item.rating < 4.0) {
-      return false; // Exclude items with rating less than 4.0
-    }
+  // Filter data based on rating, sort by, and vegetarian options
+  const [rating, setRating] = useState(null);
+  const [sortBy, setSortBy] = useState("");
 
-    // Check if the item is vegetarian if isVeg is true
-    if (isVeg && !item.veg) {
-      return false; // Exclude non-vegetarian items
-    }
+  const filteredData = data
+    .filter((item) => {
+      // Check if the item passes the rating filter
+      if (rating && item.rating < rating) {
+        return false; // Exclude items with rating less than selected rating
+      }
 
-    // Include the item if it passes all filters
-    return true;
-  });
+      // Check if the item passes the vegetarian filter
+      if (isVeg && !item.veg) {
+        return false; // Exclude non-vegetarian items if the pure veg filter is enabled
+      }
+
+      // Check if the item passes the rating filter for 4.0+
+      if (isRating && item.rating < 4.0) {
+        return false; // Exclude items with rating less than 4.0
+      }
+
+      // Include the item if it passes all filters
+      return true;
+    })
+    .sort((a, b) => {
+      // Sorting logic based on sortBy value
+      switch (sortBy) {
+        case "Rating: High to Low":
+          return b.rating - a.rating; // Sort by rating from high to low
+        case "Delivery Time":
+          return a.time - b.time;
+        case "Cost: Low to High":
+          return a.price - b.price;
+        case "Cost: High to Low":
+          return b.price - a.price;
+        default:
+          return 0; // Default sorting
+      }
+    });
+
+  // Filter Modal
+
+  const [showFilter, setShowFilter] = useState(false);
+
+  const toggleFilter = () => {
+    setShowFilter(!showFilter);
+  };
+
+  // Get Actual Rating Value from filter
+  const filterRatingValue = (element) => {
+    setRating(element);
+  };
+
+  // Get Actual Sortby Value from filter
+  const filterSortByValue = (element) => {
+    setSortBy(element);
+  };
 
   return (
     <>
       <Navbar showAlert={showAlert} />
       {/* Different Sections Bar */}
       <div className="sections mt-14 ml-8 flex items-center space-x-12 font-semibold text-lg ">
-        {/* Delevery */}
+        {/* Delivery */}
         <Link to="/order-online">
-          <div className="delivery flex items-center   space-x-2  cursor-pointer h-20 border-b-2 border-red-500">
+          <div className="delivery flex items-center space-x-2 cursor-pointer h-20 border-b-2 border-red-500">
             <img
               className={`w-12 h-12 p-2 rounded-full ${
                 isDeliveryPage ? "bg-yellow-100" : ""
@@ -61,7 +105,6 @@ const Delivery = ({ showAlert }) => {
               src="/del_logo.avif"
               alt=""
             />
-
             <p className="text-red-500">Delivery</p>
           </div>
         </Link>
@@ -77,7 +120,7 @@ const Delivery = ({ showAlert }) => {
             <p className="text-gray-800">Dining Out</p>
           </div>
         </Link>
-        {/*Nightlife*/}
+        {/* Nightlife */}
         <Link to="/nightlife">
           <div className="nightlife flex items-center space-x-4 cursor-pointer">
             <img
@@ -89,85 +132,119 @@ const Delivery = ({ showAlert }) => {
           </div>
         </Link>
       </div>
-      <div className="line-1 border-b border-gray-400 mx-8  "></div>
+      <div className="line-1 border-b border-gray-400 mx-8"></div>
 
       {/* Interaction */}
 
-      <div className="filters flex items-center mt-8 ml-8  w-36 space-x-4">
-        {/* Filters*/}
-        <div className="filters border-2 border-gray-400 rounded-lg  cursor-pointer ">
-          <pre>
-            <p className="font-sans text-sm w-[5rem] p-1 text-gray-900 flex justify-center">
-              {isRating && isVeg ? (
+      <div className="filters flex items-center pl-8 w-full h-16 bg-white space-x-4 sticky top-0 z-10">
+        {/* Filters */}
+        <div
+          className="filters border-2 border-gray-400 rounded-lg cursor-pointer"
+          onClick={toggleFilter}
+        >
+          <span className="font-sans text-sm w-[5rem]  p-1 text-gray-900 flex justify-center items-center">
+            {
+              isRating || isVeg || rating || sortBy ? ( // Check if any condition is true
                 <>
-                  <p className="text-base flex justify-evenly items-center">
-                    <span className=" bg-red-400 flex justify-center rounded-md w-6">
-                      2
-                    </span>
-                    <span className=" ">Filters</span>
-                  </p>
-                </>
-              ) : isRating || isVeg ? (
-                <>
-                  <p className="text-base flex justify-evenly items-center">
-                    <span className=" bg-red-400 flex justify-center rounded-md w-6">
-                      1
-                    </span>
-                    <span className=" ">Filters</span>
-                  </p>
+                  <span className="bg-red-400 flex justify-center rounded-md w-6">
+                    {" "}
+                    {(isRating ? 1 : 0) +
+                      (isVeg ? 1 : 0) +
+                      (rating ? 1 : 0) +
+                      (sortBy ? 1 : 0)}
+                  </span>
+                  <span> Filters</span>
                 </>
               ) : (
-                "Filters"
-              )}
-            </p>
-          </pre>
+                <span>Filters</span>
+              ) // If all conditions are false, don't apply red coloring
+            }
+          </span>
+
+          <FilterModal
+            showFilter={showFilter}
+            toggleFilter={toggleFilter}
+            filterRatingValue={filterRatingValue}
+            filterSortByValue={filterSortByValue}
+          />
         </div>
+        {/* Filter Custom Sort By */}
+        {sortBy && (
+          <button
+            onClick={() => {
+              setSortBy("");
+            }}
+            className="sort-by border-2 border-gray-400 w-48 h-8 rounded-lg flex items-center justify-center bg-red-400 text-gray-900"
+          >
+            <span className="font-sans text-sm flex justify-center items-center">
+              <>
+                <span className="text-base">
+                  {sortBy} <FontAwesomeIcon icon={faCircleXmark} />
+                </span>
+              </>
+            </span>
+          </button>
+        )}
+        {/* Filter Custom Rating */}
+        {rating && (
+          <button
+            onClick={() => {
+              setRating(null);
+            }}
+            className="sort-by border-2 border-gray-400 w-16 h-8 rounded-lg flex items-center justify-center bg-red-400 text-gray-900"
+          >
+            <span className="font-sans text-sm flex justify-center items-center">
+              <>
+                <span className="text-base">
+                  {rating} <FontAwesomeIcon icon={faCircleXmark} />
+                </span>
+              </>
+            </span>
+          </button>
+        )}
+
         {/* Rating */}
-        <div
+        <button
           onClick={handleRating}
-          className={`Rating border-2 border-gray-400 rounded-lg cursor-pointer ${
-            isRating ? "bg-red-400 " : ""
-          }`}
+          className={`border-2 border-gray-400 w-28 h-8 rounded-lg flex items-center justify-center ${
+            isRating ? "bg-red-400 " : "text-gray-900"
+          } `}
         >
-          <pre>
-            <p className="font-sans text-sm p-1 text-gray-900">
-              {isRating ? (
-                <>
-                  <p className="text-base">
-                    Rating 4.0+ <FontAwesomeIcon icon={faCircleXmark} />
-                  </p>
-                </>
-              ) : (
-                "Rating 4.0+"
-              )}
-            </p>
-          </pre>
-        </div>
-        {/* Pure Veg*/}
-        <div
+          <span className="font-sans text-sm flex justify-center items-center">
+            {isRating ? (
+              <>
+                <span className="text-base">Rating 4.0+</span>{" "}
+                <FontAwesomeIcon icon={faCircleXmark} className="ml-1" />
+              </>
+            ) : (
+              "Rating 4.0+"
+            )}
+          </span>
+        </button>
+
+        {/* Pure Veg */}
+        <button
           onClick={handleVeg}
-          className={`pure-veg border-2 border-gray-400 rounded-lg  cursor-pointer ${
-            isVeg ? "bg-red-400" : ""
-          }`}
+          className={`border-2 border-gray-400 w-28 h-8 rounded-lg flex items-center justify-center ${
+            isVeg ? "bg-red-400 " : "text-gray-900"
+          } `}
         >
-          <pre>
-            <p className="font-sans text-sm p-1 text-gray-900">
-              {isVeg ? (
-                <>
-                  <p className="text-base">
-                    Pure Veg <FontAwesomeIcon icon={faCircleXmark} />
-                  </p>
-                </>
-              ) : (
-                <>Pure Veg</>
-              )}
-            </p>
-          </pre>
-        </div>
+          <span className="font-sans text-sm flex justify-center items-center">
+            {isVeg ? (
+              <>
+                <span className="text-base">
+                  Pure Veg <FontAwesomeIcon icon={faCircleXmark} />
+                </span>
+              </>
+            ) : (
+              <>Pure Veg</>
+            )}
+          </span>
+        </button>
       </div>
 
       {/* Products */}
-      <div className="container m-0 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-6 p-6">
+      <div className="container m-0 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-6 p-4">
         {filteredData.map((item) => (
           <Cards key={item.id} item={item} />
         ))}

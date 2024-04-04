@@ -101,7 +101,7 @@ const DineOut = ({ showAlert }) => {
       <div className="line-1 border-b border-gray-400 mx-8  "></div>
 
       {/* Filters */}
-      <div className="filters flex items-center mt-8 ml-8  w-36 space-x-4">
+      <div className="filters flex items-center pl-8  w-full h-16 bg-white  space-x-4 sticky top-0 z-10">
         {/* Filters*/}
         <div className="filters border-2 border-gray-400 rounded-lg  cursor-pointer ">
           <pre>
@@ -189,7 +189,7 @@ const DineOut = ({ showAlert }) => {
       </div>
 
       {/* Resturants Listing */}
-      <div className="container m-0 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-6 p-6">
+      <div className="container m-0 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-6 p-4">
         {filteredData.map((item) => (
           <ResturantCards key={item.id} item={item} />
         ))}

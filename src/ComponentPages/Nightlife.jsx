@@ -86,12 +86,12 @@ const Nightlife = ({ showAlert }) => {
       <div className="line-1 border-b border-gray-400 mx-8  "></div>
 
       {/* Filters */}
-      <div className="filters flex items-center mt-8 ml-8  w-80  space-x-4">
+      <div className="filters flex items-center pl-8  w-full h-16 bg-white  space-x-4 sticky top-0 z-10">
         {/* Filters*/}
 
-        <div className="filters border-2 border-gray-400 rounded-lg  cursor-pointer ">
+        <div className="filters border-2 border-gray-400 rounded-lg  cursor-pointer w-[5rem] ">
           <pre>
-            <p className="font-sans text-sm p-1 text-gray-900">
+            <p className="font-sans text-sm p-1 text-gray-900 flex justify-center">
               {isGold || isRating ? (
                 <>
                   <p className="text-base flex justify-evenly items-center">
@@ -127,7 +127,7 @@ const Nightlife = ({ showAlert }) => {
           onClick={handleGold}
         >
           <pre className="flex justify-center items-center ">
-            <FontAwesomeIcon icon={faCrown} />
+            <FontAwesomeIcon className="text-yellow-600" icon={faCrown} />
             <p className="font-sans text-sm p-1 text-gray-900">Gold</p>
           </pre>
         </div>
@@ -135,7 +135,7 @@ const Nightlife = ({ showAlert }) => {
 
       {/* Nightlife Resturants */}
 
-      <div className="container m-0 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-6 p-6">
+      <div className="container m-0 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-6 p-4">
         {filteredData.map((item) => (
           <NIghtlifeCards key={item.id} item={item} />
         ))}
