@@ -6,7 +6,7 @@ const HomeCards = () => {
     <>
       <div className="flex justify-center items-center">
         {/* Order Online Card */}
-        <div className="delivery-card w-[20rem] h-56 rounded-2xl cursor-pointer border border-black border-opacity-50 m-4 overflow-hidden ">
+        <div className="delivery-card w-[20rem] h-56 rounded-2xl cursor-pointer border border-black border-opacity-50 m-4 overflow-hidden  ">
           <Link to="/order-online">
             <div>
               <div className="logo h-full">

@@ -90,21 +90,17 @@ const Nightlife = ({ showAlert }) => {
         {/* Filters*/}
 
         <div className="filters border-2 border-gray-400 rounded-lg  cursor-pointer w-[5rem] ">
-          <pre>
-            <p className="font-sans text-sm p-1 text-gray-900 flex justify-center">
-              {isGold || isRating ? (
-                <>
-                  <p className="text-base flex justify-evenly items-center">
-                    <span className="bg-red-400 flex justify-center rounded-md w-6">
-                      {(isRating ? 1 : 0) + (isGold ? 1 : 0)}
-                    </span>
-                    <span>Filters</span>
-                  </p>
-                </>
-              ) : (
-                "Filters"
-              )}
-            </p>
+          <pre className="font-sans text-sm p-1 text-gray-900 flex justify-center">
+            {isGold || isRating ? (
+              <>
+                <span className="bg-red-400 flex justify-center rounded-md w-6 text-base items-center">
+                  {(isRating ? 1 : 0) + (isGold ? 1 : 0)}
+                </span>
+                <span>Filters</span>
+              </>
+            ) : (
+              "Filters"
+            )}
           </pre>
         </div>
 

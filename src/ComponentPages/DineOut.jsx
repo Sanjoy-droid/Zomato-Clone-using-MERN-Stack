@@ -7,6 +7,7 @@ import { useContext, useState } from "react";
 import resturantContext from "../context/GlobalContext/ResturantContext";
 import ResturantCards from "./Dining Out/ResturantCards";
 import Footer from "./Footer";
+import DiningFilterModal from "./Dining Out/DiningFilterModal";
 
 const DineOut = ({ showAlert }) => {
   const location = useLocation();
@@ -34,26 +35,65 @@ const DineOut = ({ showAlert }) => {
     setIsOutdoor(!isOutdoor);
   };
 
+  const [rating, setRating] = useState(null);
+  const [sortBy, setSortBy] = useState("");
+
   // Filter resturants based on rating, open now, and outdoor seating options
-  const filteredData = resturant.filter((item) => {
-    // Check if the item passes the rating filter if isRating is true
-    if (isRating && item.rating < 4.0) {
-      return false; // Exclude items with rating less than 4.0
-    }
+  const filteredData = resturant
+    .filter((item) => {
+      if (rating && item.rating < rating) {
+        return false; // Exclude items with rating less than selected rating
+      }
 
-    // Check if the item passes the open now filter if isOpen is true
-    if (isOpen && !item.openNow) {
-      return false; // Exclude items that are not open now
-    }
+      // Check if the item passes the rating filter if isRating is true
+      if (isRating && item.rating < 4.0) {
+        return false; // Exclude items with rating less than 4.0
+      }
 
-    // Check if the item passes the outdoor seating filter if isOutdoor is true
-    if (isOutdoor && !item.outdoorSeating) {
-      return false; // Exclude items that do not have outdoor seating
-    }
+      // Check if the item passes the open now filter if isOpen is true
+      if (isOpen && !item.openNow) {
+        return false; // Exclude items that are not open now
+      }
 
-    // Include the item if it passes all filters
-    return true;
-  });
+      // Check if the item passes the outdoor seating filter if isOutdoor is true
+      if (isOutdoor && !item.outdoorSeating) {
+        return false; // Exclude items that do not have outdoor seating
+      }
+
+      // Include the item if it passes all filters
+      return true;
+    })
+    .sort((a, b) => {
+      // Sorting logic based on sortBy value
+      switch (sortBy) {
+        case "Rating: High to Low":
+          return b.rating - a.rating; // Sort by rating from high to low
+        case "Distance":
+          return a.distance - b.distance;
+        case "Cost: Low to High":
+          return a.price - b.price;
+        case "Cost: High to Low":
+          return b.price - a.price;
+        default:
+          return 0; // Default sorting
+      }
+    });
+
+  const [showFilter, setShowFilter] = useState(false);
+
+  const toggleFilter = () => {
+    setShowFilter(!showFilter);
+  };
+
+  // Get Actual Rating Value from filter
+  const filterRatingValue = (element) => {
+    setRating(element);
+  };
+
+  // Get Actual Sortby Value from filter
+  const filterSortByValue = (element) => {
+    setSortBy(element);
+  };
 
   return (
     <>
@@ -103,26 +143,74 @@ const DineOut = ({ showAlert }) => {
       {/* Filters */}
       <div className="filters flex items-center pl-8  w-full h-16 bg-white  space-x-4 sticky top-0 z-10">
         {/* Filters*/}
-        <div className="filters border-2 border-gray-400 rounded-lg  cursor-pointer ">
+        <button
+          onClick={() => {
+            toggleFilter();
+          }}
+          className="filters border-2 border-gray-400 rounded-lg  cursor-pointer "
+        >
           <pre>
             <p className="font-sans text-sm w-[5rem] p-1 text-gray-900 flex justify-center">
-              {isRating || isOpen || isOutdoor ? (
-                <>
-                  <p className="text-base flex justify-evenly items-center">
+              {
+                isRating || isOutdoor || isOpen || rating || sortBy ? ( // Check if any condition is true
+                  <>
                     <span className="bg-red-400 flex justify-center rounded-md w-6">
+                      {" "}
                       {(isRating ? 1 : 0) +
+                        (isOutdoor ? 1 : 0) +
                         (isOpen ? 1 : 0) +
-                        (isOutdoor ? 1 : 0)}
+                        (rating ? 1 : 0) +
+                        (sortBy ? 1 : 0)}
                     </span>
-                    <span>Filters</span>
-                  </p>
-                </>
-              ) : (
-                "Filters"
-              )}
+                    <span> Filters</span>
+                  </>
+                ) : (
+                  <span>Filters</span>
+                ) // If all conditions are false, don't apply red coloring
+              }
             </p>
           </pre>
-        </div>
+          <DiningFilterModal
+            showFilter={showFilter}
+            toggleFilter={toggleFilter}
+            filterRatingValue={filterRatingValue}
+            filterSortByValue={filterSortByValue}
+          />
+        </button>
+        {/* Filter Custom Sort By */}
+        {sortBy && (
+          <button
+            onClick={() => {
+              setSortBy("");
+            }}
+            className="sort-by border-2 border-gray-400 w-48 h-8 rounded-lg flex items-center justify-center bg-red-400 text-gray-900"
+          >
+            <span className="font-sans text-sm flex justify-center items-center">
+              <>
+                <span className="text-base">
+                  {sortBy} <FontAwesomeIcon icon={faCircleXmark} />
+                </span>
+              </>
+            </span>
+          </button>
+        )}
+        {/* Filter Custom Rating */}
+        {rating && (
+          <button
+            onClick={() => {
+              setRating(null);
+            }}
+            className="sort-by border-2 border-gray-400 w-16 h-8 rounded-lg flex items-center justify-center bg-red-400 text-gray-900"
+          >
+            <span className="font-sans text-sm flex justify-center items-center">
+              <>
+                <span className="text-base">
+                  {rating} <FontAwesomeIcon icon={faCircleXmark} />
+                </span>
+              </>
+            </span>
+          </button>
+        )}
         {/* Rating */}
         <div
           onClick={handleRating}
