@@ -21,7 +21,7 @@ const Navbar = ({ showAlert }) => {
         <div className="logo cursor-pointer" onClick={handleClick}>
           <img
             className="w-36 h-8 ml-4"
-            src="./nav-logo.avif"
+            src="/nav-logo.avif"
             alt="zomato logo"
           />
         </div>

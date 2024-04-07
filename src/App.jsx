@@ -19,6 +19,9 @@ import SignupModal from "./ComponentPages/Login Signup/SignupModal";
 import LoginModal from "./ComponentPages/Login Signup/LoginModal";
 import Alert from "./ComponentPages/Alerts";
 import Navbar from "./Navbar";
+import DeliveryProductDetail from "./ComponentPages/Delivery/DeliveryProductDetail";
+import DiningDetail from "./ComponentPages/Dining Out/DiningDetail";
+import NightlifeDetail from "./ComponentPages/Nightlife/NightlifeDetail";
 
 function App() {
   const [alert, setAlert] = useState(null);
@@ -66,6 +69,21 @@ function App() {
               exact
               path="/signup"
               element={<SignupModal showAlert={showAlert} />}
+            />
+            <Route
+              exact
+              path="/order-online/delivery-detail/:id"
+              element={<DeliveryProductDetail />}
+            />
+            <Route
+              exact
+              path="/dine-out/dine-detail/:id"
+              element={<DiningDetail />}
+            />
+            <Route
+              exact
+              path="/nightlife/nightlife-detail/:id"
+              element={<NightlifeDetail />}
             />
           </Routes>
         </AppState>

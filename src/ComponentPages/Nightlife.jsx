@@ -225,7 +225,9 @@ const Nightlife = ({ showAlert }) => {
 
       <div className="container m-0 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-6 p-4">
         {filteredData.map((item) => (
-          <NightlifeCards key={item.id} item={item} />
+          <Link key={item.id} to={`/nightlife/nightlife-detail/${item.id}`}>
+            <NightlifeCards key={item.id} item={item} />
+          </Link>
         ))}
       </div>
       <Footer />

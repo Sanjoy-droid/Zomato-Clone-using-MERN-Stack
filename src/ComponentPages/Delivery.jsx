@@ -246,9 +246,12 @@ const Delivery = ({ showAlert }) => {
       {/* Products */}
       <div className="container m-0 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-6 p-4">
         {filteredData.map((item) => (
-          <Cards key={item.id} item={item} />
+          <Link key={item.id} to={`/order-online/delivery-detail/${item.id}`}>
+            <Cards item={item} />
+          </Link>
         ))}
       </div>
+
       {/* Footer */}
       <Footer />
     </>
