@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import Navbar from "../Navbar";
 import nightlifeContext from "../context/GlobalContext/nightlifeContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -14,7 +14,7 @@ const Nightlife = ({ showAlert }) => {
   const isDeliveryPage = location.pathname === "/nightlife";
 
   const context = useContext(nightlifeContext);
-  const { nightlifes, setNightlifes } = context;
+  const { nightlifes, getNightlife } = context;
 
   // Rating
   const [isRating, setIsRating] = useState(false);
@@ -80,6 +80,10 @@ const Nightlife = ({ showAlert }) => {
           return 0; // Default sorting
       }
     });
+
+  useEffect(() => {
+    getNightlife();
+  }, []);
 
   return (
     <>
@@ -225,8 +229,11 @@ const Nightlife = ({ showAlert }) => {
 
       <div className="container m-0 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-6 p-4">
         {filteredData.map((item) => (
-          <Link key={item.id} to={`/nightlife/nightlife-detail/${item.id}`}>
-            <NightlifeCards key={item.id} item={item} />
+          <Link
+            key={`link-${item.id}`}
+            to={`/nightlife/nightlife-detail/${item.id}`}
+          >
+            <NightlifeCards key={`card-${item.id}`} item={item} />
           </Link>
         ))}
       </div>

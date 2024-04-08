@@ -3,7 +3,7 @@ import Navbar from "../Navbar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleXmark, faL } from "@fortawesome/free-solid-svg-icons";
 
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import resturantContext from "../context/GlobalContext/ResturantContext";
 import ResturantCards from "./Dining Out/ResturantCards";
 import Footer from "./Footer";
@@ -15,7 +15,7 @@ const DineOut = ({ showAlert }) => {
   const isDeliveryPage = location.pathname === "/dine-out";
 
   const context = useContext(resturantContext);
-  const { resturant, setResturant } = context;
+  const { resturant, getResturant } = context;
 
   // Rating
   const [isRating, setIsRating] = useState(false);
@@ -94,6 +94,10 @@ const DineOut = ({ showAlert }) => {
   const filterSortByValue = (element) => {
     setSortBy(element);
   };
+
+  useEffect(() => {
+    getResturant();
+  }, []);
 
   return (
     <>

@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleXmark } from "@fortawesome/free-solid-svg-icons";
 
 import { Link, useLocation } from "react-router-dom";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 
 import appContext from "../context/GlobalContext/appContext";
 import Navbar from "../Navbar";
@@ -16,7 +16,7 @@ const Delivery = ({ showAlert }) => {
   const isDeliveryPage = location.pathname === "/order-online";
 
   const context = useContext(appContext);
-  const { data, setData } = context;
+  const { data, getData } = context;
 
   // Rating
   const [isRating, setIsRating] = useState(false);
@@ -89,6 +89,10 @@ const Delivery = ({ showAlert }) => {
   const filterSortByValue = (element) => {
     setSortBy(element);
   };
+
+  useEffect(() => {
+    getData();
+  }, []);
 
   return (
     <>
