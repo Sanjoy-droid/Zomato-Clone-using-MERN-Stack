@@ -1,12 +1,12 @@
 import { Link, useLocation } from "react-router-dom";
 import { useState, useContext, useEffect } from "react";
 import Navbar from "../Navbar";
-import nightlifeContext from "../context/GlobalContext/nightlifeContext";
+import nightlifeContext from "../../context/GlobalContext/nightlifeContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCrown, faCircleXmark } from "@fortawesome/free-solid-svg-icons";
-import Footer from "./Footer";
-import NightFilterModal from "./Nightlife/NightFilterModal";
-import NightlifeCards from "./Nightlife/NightlifeCards";
+import Footer from "../Footer";
+import NightFilterModal from "./NightFilterModal";
+import NightlifeCards from "./NightlifeCards";
 
 const Nightlife = ({ showAlert }) => {
   const location = useLocation();

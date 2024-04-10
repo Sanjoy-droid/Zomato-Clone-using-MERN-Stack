@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import Footer from "./ComponentPages/Footer";
+import Footer from "../Footer";
 import HomeCards from "./HomeCards";
 const Home = () => {
   return (

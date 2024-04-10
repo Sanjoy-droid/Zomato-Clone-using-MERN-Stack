@@ -4,10 +4,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleXmark, faL } from "@fortawesome/free-solid-svg-icons";
 
 import { useContext, useState, useEffect } from "react";
-import resturantContext from "../context/GlobalContext/ResturantContext";
-import ResturantCards from "./Dining Out/ResturantCards";
-import Footer from "./Footer";
-import DiningFilterModal from "./Dining Out/DiningFilterModal";
+import resturantContext from "../../context/GlobalContext/ResturantContext";
+import ResturantCards from "./ResturantCards";
+import Footer from "../Footer";
+import DiningFilterModal from "./DiningFilterModal";
 
 const DineOut = ({ showAlert }) => {
   const location = useLocation();

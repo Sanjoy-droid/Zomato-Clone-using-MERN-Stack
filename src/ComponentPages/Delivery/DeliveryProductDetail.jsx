@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { useContext } from "react";
 import appContext from "../../context/GlobalContext/appContext";
-import Navbar from "../../Navbar";
+import Navbar from "../Navbar";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBookmark } from "@fortawesome/free-regular-svg-icons";

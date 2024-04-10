@@ -4,11 +4,11 @@ import { faCircleXmark } from "@fortawesome/free-solid-svg-icons";
 import { Link, useLocation } from "react-router-dom";
 import { useContext, useState, useEffect } from "react";
 
-import appContext from "../context/GlobalContext/appContext";
+import appContext from "../../context/GlobalContext/appContext";
 import Navbar from "../Navbar";
-import Cards from "./Cards";
-import Footer from "./Footer";
-import FilterModal from "./FilterModal";
+import Cards from "../Cards";
+import Footer from "../Footer";
+import FilterModal from "../Modals/FilterModal";
 
 const Delivery = ({ showAlert }) => {
   const location = useLocation();

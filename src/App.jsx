@@ -5,15 +5,14 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import { useState } from "react";
 
-import Home from "./Home";
-import Delivery from "./ComponentPages/Delivery";
-import DineOut from "./ComponentPages/DineOut";
+import Home from "./ComponentPages/Home/Home";
+import Delivery from "./ComponentPages/Delivery/Delivery";
+import DineOut from "./ComponentPages/Dining Out/DineOut";
 import AppState from "./context/GlobalContext/AppState";
-import Nightlife from "./ComponentPages/Nightlife";
+import Nightlife from "./ComponentPages/Nightlife/Nightlife";
 import SignupModal from "./ComponentPages/Login Signup/SignupModal";
 import LoginModal from "./ComponentPages/Login Signup/LoginModal";
 import Alert from "./ComponentPages/Alerts";
-import Navbar from "./Navbar";
 import DeliveryProductDetail from "./ComponentPages/Delivery/DeliveryProductDetail";
 import DiningDetail from "./ComponentPages/Dining Out/DiningDetail";
 import NightlifeDetail from "./ComponentPages/Nightlife/NightlifeDetail";

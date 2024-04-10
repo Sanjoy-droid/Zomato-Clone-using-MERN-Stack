@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { useContext } from "react";
 import nightlifeContext from "../../context/GlobalContext/nightlifeContext";
-import Navbar from "../../Navbar";
+import Navbar from "../Navbar";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBookmark } from "@fortawesome/free-regular-svg-icons";
