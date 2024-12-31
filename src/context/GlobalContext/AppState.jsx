@@ -1,6 +1,6 @@
 import { useState } from "react";
 import AppContext from "./appContext";
-import ResturantContext from "./ResturantContext";
+import ResturantContext from "./resturantContext";
 import NightlifeContext from "./nightlifeContext";
 const AppState = (props) => {
   const host = import.meta.env.VITE_URL;

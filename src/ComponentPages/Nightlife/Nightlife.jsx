@@ -226,17 +226,18 @@ const Nightlife = ({ showAlert }) => {
       </div>
 
       {/* Nightlife Resturants */}
-
-      <div className="container m-0 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-6 p-4">
+      <div className="container mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 p-4">
         {filteredData.map((item) => (
           <Link
             key={`link-${item.id}`}
             to={`/nightlife/nightlife-detail/${item.id}`}
+            className="w-full transform transition-transform duration-300 hover:scale-[1.02]"
           >
             <NightlifeCards key={`card-${item.id}`} item={item} />
           </Link>
         ))}
       </div>
+
       <Footer />
     </>
   );

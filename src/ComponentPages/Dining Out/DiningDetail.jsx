@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { useContext } from "react";
-import resturantContext from "../../context/GlobalContext/ResturantContext";
+import resturantContext from "../../context/GlobalContext/resturantContext";
 import Navbar from "../Navbar";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

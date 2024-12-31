@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleXmark, faL } from "@fortawesome/free-solid-svg-icons";
 
 import { useContext, useState, useEffect } from "react";
-import resturantContext from "../../context/GlobalContext/ResturantContext";
+import resturantContext from "../../context/GlobalContext/resturantContext";
 import ResturantCards from "./ResturantCards";
 import Footer from "../Footer";
 import DiningFilterModal from "./DiningFilterModal";
@@ -282,9 +282,22 @@ const DineOut = ({ showAlert }) => {
       </div>
 
       {/* Resturants Listing */}
-      <div className="container m-0 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-6 p-4">
+      <div
+        className="
+
+container mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 p-4
+
+
+
+
+        "
+      >
         {filteredData.map((item) => (
-          <Link key={item.id} to={`/dine-out/dine-detail/${item.id}`}>
+          <Link
+            className="w-full transform transition-transform duration-300 hover:scale-[1.02]"
+            key={item.id}
+            to={`/dine-out/dine-detail/${item.id}`}
+          >
             <ResturantCards item={item} />
           </Link>
         ))}

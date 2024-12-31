@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import NightSortbyModal from "./NightSortbyModal";
-import NightRatingModal from "./NIghtRatingModal";
+import NightRatingModal from "./NightRatingModal";
 const NightFilterModal = ({
   showFilter,
   toggleFilter,
