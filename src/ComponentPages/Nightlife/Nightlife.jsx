@@ -1,14 +1,24 @@
 import { Link, useLocation } from "react-router-dom";
-import { useState, useContext, useEffect } from "react";
-import Navbar from "../Navbar";
+import {
+  useState,
+  useContext,
+  useEffect,
+  useMemo,
+  lazy,
+  Suspense,
+} from "react";
 import nightlifeContext from "../../context/GlobalContext/nightlifeContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCrown, faCircleXmark } from "@fortawesome/free-solid-svg-icons";
-import Footer from "../Footer";
 import NightFilterModal from "./NightFilterModal";
-import NightlifeCards from "./NightlifeCards";
+import LoadingSpinner from "../../components/LoadingSpinner";
+
+const Navbar = lazy(() => import("../Navbar"));
+const Footer = lazy(() => import("../Footer"));
+const NightlifeCards = lazy(() => import("./NightlifeCards"));
 
 const Nightlife = ({ showAlert }) => {
+  const [isLoading, setIsLoading] = useState(true);
   const location = useLocation();
 
   const isDeliveryPage = location.pathname === "/nightlife";
@@ -49,45 +59,57 @@ const Nightlife = ({ showAlert }) => {
     setSortBy(element);
   };
 
-  const filteredData = nightlifes
-    .filter((item) => {
-      if (rating && item.rating < rating) {
-        return false; // Exclude items with rating less than selected rating
-      }
-      // Check if the item passes the rating filter if isRating is true
-      if (isRating && item.rating < 4.0) {
-        return false; // Exclude items with rating less than 4.0
-      }
+  const func = () => {};
+  const filteredData = useMemo(() => {
+    return nightlifes
+      .filter((item) => {
+        if (rating && item.rating < rating) {
+          return false; // Exclude items with rating less than selected rating
+        }
+        // Check if the item passes the rating filter if isRating is true
+        if (isRating && item.rating < 4.0) {
+          return false; // Exclude items with rating less than 4.0
+        }
 
-      // Check if the item passes the gold filter if gold is true
-      if (isGold && !item.gold) {
-        return false;
-      }
-      return true;
-    })
-    .sort((a, b) => {
-      // Sorting logic based on sortBy value
-      switch (sortBy) {
-        case "Rating: High to Low":
-          return b.rating - a.rating; // Sort by rating from high to low
-        case "Distance":
-          return a.distance - b.distance;
-        case "Cost: Low to High":
-          return a.price - b.price;
-        case "Cost: High to Low":
-          return b.price - a.price;
-        default:
-          return 0; // Default sorting
-      }
-    });
-
-  useEffect(() => {
-    getNightlife();
+        // Check if the item passes the gold filter if gold is true
+        if (isGold && !item.gold) {
+          return false;
+        }
+        return true;
+      })
+      .sort((a, b) => {
+        // Sorting logic based on sortBy value
+        switch (sortBy) {
+          case "Rating: High to Low":
+            return b.rating - a.rating; // Sort by rating from high to low
+          case "Distance":
+            return a.distance - b.distance;
+          case "Cost: Low to High":
+            return a.price - b.price;
+          case "Cost: High to Low":
+            return b.price - a.price;
+          default:
+            return 0; // Default sorting
+        }
+      });
   }, []);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsLoading(true);
+      await getNightlife();
+      setIsLoading(false);
+    };
+
+    fetchData();
+  }, []);
+
+  if (isLoading) return <LoadingSpinner />;
   return (
     <>
-      <Navbar showAlert={showAlert} />
+      <Suspense fallback={<LoadingSpinner />}>
+        <Navbar showAlert={showAlert} />
+      </Suspense>
       {/* Different Sections Bar */}
       <div className="sections mt-14 ml-8 flex items-center space-x-12 font-semibold text-lg ">
         {/* Delevery */}
@@ -233,12 +255,16 @@ const Nightlife = ({ showAlert }) => {
             to={`/nightlife/nightlife-detail/${item.id}`}
             className="w-full transform transition-transform duration-300 hover:scale-[1.02]"
           >
-            <NightlifeCards key={`card-${item.id}`} item={item} />
+            <Suspense fallback={<LoadingSpinner />}>
+              <NightlifeCards key={`card-${item.id}`} item={item} />
+            </Suspense>
           </Link>
         ))}
       </div>
 
-      <Footer />
+      <Suspense fallback={<LoadingSpinner />}>
+        <Footer />
+      </Suspense>
     </>
   );
 };

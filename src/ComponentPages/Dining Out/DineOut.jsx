@@ -1,15 +1,19 @@
+import React, { lazy, Suspense } from "react";
 import { Link, useLocation } from "react-router-dom";
-import Navbar from "../Navbar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleXmark, faL } from "@fortawesome/free-solid-svg-icons";
 
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState, useEffect, useMemo } from "react";
 import resturantContext from "../../context/GlobalContext/resturantContext";
-import ResturantCards from "./ResturantCards";
-import Footer from "../Footer";
 import DiningFilterModal from "./DiningFilterModal";
+import LoadingSpinner from "../../components/LoadingSpinner";
+
+const Navbar = lazy(() => import("../Navbar"));
+const ResturantCards = lazy(() => import("./ResturantCards"));
+const Footer = lazy(() => import("../Footer"));
 
 const DineOut = ({ showAlert }) => {
+  const [isLoading, setIsLoading] = useState(true);
   const location = useLocation();
 
   const isDeliveryPage = location.pathname === "/dine-out";
@@ -39,45 +43,47 @@ const DineOut = ({ showAlert }) => {
   const [sortBy, setSortBy] = useState("");
 
   // Filter resturants based on rating, open now, and outdoor seating options
-  const filteredData = resturant
-    .filter((item) => {
-      if (rating && item.rating < rating) {
-        return false; // Exclude items with rating less than selected rating
-      }
+  const filteredData = useMemo(() => {
+    return resturant
+      .filter((item) => {
+        if (rating && item.rating < rating) {
+          return false; // Exclude items with rating less than selected rating
+        }
 
-      // Check if the item passes the rating filter if isRating is true
-      if (isRating && item.rating < 4.0) {
-        return false; // Exclude items with rating less than 4.0
-      }
+        // Check if the item passes the rating filter if isRating is true
+        if (isRating && item.rating < 4.0) {
+          return false; // Exclude items with rating less than 4.0
+        }
 
-      // Check if the item passes the open now filter if isOpen is true
-      if (isOpen && !item.openNow) {
-        return false; // Exclude items that are not open now
-      }
+        // Check if the item passes the open now filter if isOpen is true
+        if (isOpen && !item.openNow) {
+          return false; // Exclude items that are not open now
+        }
 
-      // Check if the item passes the outdoor seating filter if isOutdoor is true
-      if (isOutdoor && !item.outdoorSeating) {
-        return false; // Exclude items that do not have outdoor seating
-      }
+        // Check if the item passes the outdoor seating filter if isOutdoor is true
+        if (isOutdoor && !item.outdoorSeating) {
+          return false; // Exclude items that do not have outdoor seating
+        }
 
-      // Include the item if it passes all filters
-      return true;
-    })
-    .sort((a, b) => {
-      // Sorting logic based on sortBy value
-      switch (sortBy) {
-        case "Rating: High to Low":
-          return b.rating - a.rating; // Sort by rating from high to low
-        case "Distance":
-          return a.distance - b.distance;
-        case "Cost: Low to High":
-          return a.price - b.price;
-        case "Cost: High to Low":
-          return b.price - a.price;
-        default:
-          return 0; // Default sorting
-      }
-    });
+        // Include the item if it passes all filters
+        return true;
+      })
+      .sort((a, b) => {
+        // Sorting logic based on sortBy value
+        switch (sortBy) {
+          case "Rating: High to Low":
+            return b.rating - a.rating; // Sort by rating from high to low
+          case "Distance":
+            return a.distance - b.distance;
+          case "Cost: Low to High":
+            return a.price - b.price;
+          case "Cost: High to Low":
+            return b.price - a.price;
+          default:
+            return 0; // Default sorting
+        }
+      });
+  }, [isOutdoor, isRating, isOpen, sortBy, rating, resturant]);
 
   const [showFilter, setShowFilter] = useState(false);
 
@@ -96,12 +102,21 @@ const DineOut = ({ showAlert }) => {
   };
 
   useEffect(() => {
-    getResturant();
+    const fetchData = async () => {
+      setIsLoading(true);
+      await getResturant();
+      setIsLoading(false);
+    };
+
+    fetchData();
   }, []);
 
+  if (isLoading) return <LoadingSpinner />;
   return (
     <>
-      <Navbar showAlert={showAlert} />
+      <Suspense fallback={<LoadingSpinner />}>
+        <Navbar showAlert={showAlert} />
+      </Suspense>
       {/* Different Sections Bar */}
       <div className="sections mt-14 ml-8 flex items-center space-x-12 font-semibold text-lg ">
         {/* Delevery */}
@@ -154,7 +169,7 @@ const DineOut = ({ showAlert }) => {
           className="filters border-2 border-gray-400 rounded-lg  cursor-pointer "
         >
           <pre>
-            <p className="font-sans text-sm w-[5rem] p-1 text-gray-900 flex justify-center">
+            <span className="font-sans text-sm w-[5rem] p-1 text-gray-900 flex justify-center">
               {
                 isRating || isOutdoor || isOpen || rating || sortBy ? ( // Check if any condition is true
                   <>
@@ -172,7 +187,7 @@ const DineOut = ({ showAlert }) => {
                   <span>Filters</span>
                 ) // If all conditions are false, don't apply red coloring
               }
-            </p>
+            </span>
           </pre>
           <DiningFilterModal
             showFilter={showFilter}
@@ -224,7 +239,7 @@ const DineOut = ({ showAlert }) => {
           }`}
         >
           <pre>
-            <p className="font-sans text-sm p-1 text-gray-900">
+            <span className="font-sans text-sm p-1 text-gray-900">
               {isRating ? (
                 <>
                   <p className="text-base">
@@ -234,7 +249,7 @@ const DineOut = ({ showAlert }) => {
               ) : (
                 "Rating 4.0+"
               )}
-            </p>
+            </span>
           </pre>
         </div>
         {/* Outdoor Seating*/}
@@ -245,7 +260,7 @@ const DineOut = ({ showAlert }) => {
           }`}
         >
           <pre>
-            <p className="font-sans text-sm p-1 text-gray-900">
+            <span className="font-sans text-sm p-1 text-gray-900">
               {isOutdoor ? (
                 <>
                   <p className="text-base">
@@ -255,7 +270,7 @@ const DineOut = ({ showAlert }) => {
               ) : (
                 "Outdoor Seating"
               )}
-            </p>
+            </span>
           </pre>
         </div>
         {/* Open Now */}
@@ -266,17 +281,17 @@ const DineOut = ({ showAlert }) => {
           }`}
         >
           <pre>
-            <p className="font-sans text-sm p-1 text-gray-900">
+            <span className="font-sans text-sm p-1 text-gray-900">
               {isOpen ? (
                 <>
-                  <p className="text-base">
+                  <span className="text-base">
                     Open Now <FontAwesomeIcon icon={faCircleXmark} />
-                  </p>
+                  </span>
                 </>
               ) : (
                 "Open Now"
               )}
-            </p>
+            </span>
           </pre>
         </div>
       </div>
@@ -298,13 +313,17 @@ container mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 
             key={item.id}
             to={`/dine-out/dine-detail/${item.id}`}
           >
-            <ResturantCards item={item} />
+            <Suspense fallback={<LoadingSpinner />}>
+              <ResturantCards item={item} />
+            </Suspense>
           </Link>
         ))}
       </div>
 
       {/* Footer */}
-      <Footer />
+      <Suspense fallback={<LoadingSpinner />}>
+        <Footer />
+      </Suspense>
     </>
   );
 };

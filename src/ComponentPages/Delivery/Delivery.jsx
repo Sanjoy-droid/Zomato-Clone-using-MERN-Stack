@@ -1,16 +1,28 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleXmark } from "@fortawesome/free-solid-svg-icons";
+import LoadingSpinner from "../../components/LoadingSpinner";
 
 import { Link, useLocation } from "react-router-dom";
-import { useContext, useState, useEffect } from "react";
+import {
+  useContext,
+  useState,
+  useEffect,
+  useMemo,
+  useCallback,
+  useRef,
+  lazy,
+  Suspense,
+} from "react";
 
 import appContext from "../../context/GlobalContext/appContext";
-import Navbar from "../Navbar";
-import Cards from "../Cards";
-import Footer from "../Footer";
 import FilterModal from "../Modals/FilterModal";
 
+const Navbar = lazy(() => import("../Navbar"));
+const Footer = lazy(() => import("../Footer"));
+const Cards = lazy(() => import("../Cards"));
+
 const Delivery = ({ showAlert }) => {
+  const [isLoading, setIsLoading] = useState(true);
   const location = useLocation();
 
   const isDeliveryPage = location.pathname === "/order-online";
@@ -21,56 +33,58 @@ const Delivery = ({ showAlert }) => {
   // Rating
   const [isRating, setIsRating] = useState(false);
 
-  const handleRating = () => {
-    setIsRating(!isRating);
-  };
+  const handleRating = useCallback(() => {
+    setIsRating((prev) => !prev);
+  }, []);
 
   // Pure Veg
   const [isVeg, setIsVeg] = useState(false);
 
-  const handleVeg = () => {
-    setIsVeg(!isVeg);
-  };
+  const handleVeg = useCallback(() => {
+    setIsVeg((prev) => !prev);
+  }, []);
 
   // Filter data based on rating, sort by, and vegetarian options
   const [rating, setRating] = useState(null);
   const [sortBy, setSortBy] = useState("");
 
-  const filteredData = data
-    .filter((item) => {
-      // Check if the item passes the rating filter
-      if (rating && item.rating < rating) {
-        return false; // Exclude items with rating less than selected rating
-      }
+  const filteredData = useMemo(() => {
+    return data
+      .filter((item) => {
+        // Check if the item passes the rating filter
+        if (rating && item.rating < rating) {
+          return false; // Exclude items with rating less than selected rating
+        }
 
-      // Check if the item passes the vegetarian filter
-      if (isVeg && !item.veg) {
-        return false; // Exclude non-vegetarian items if the pure veg filter is enabled
-      }
+        // Check if the item passes the vegetarian filter
+        if (isVeg && !item.veg) {
+          return false; // Exclude non-vegetarian items if the pure veg filter is enabled
+        }
 
-      // Check if the item passes the rating filter for 4.0+
-      if (isRating && item.rating < 4.0) {
-        return false; // Exclude items with rating less than 4.0
-      }
+        // Check if the item passes the rating filter for 4.0+
+        if (isRating && item.rating < 4.0) {
+          return false; // Exclude items with rating less than 4.0
+        }
 
-      // Include the item if it passes all filters
-      return true;
-    })
-    .sort((a, b) => {
-      // Sorting logic based on sortBy value
-      switch (sortBy) {
-        case "Rating: High to Low":
-          return b.rating - a.rating; // Sort by rating from high to low
-        case "Delivery Time":
-          return a.time - b.time;
-        case "Cost: Low to High":
-          return a.price - b.price;
-        case "Cost: High to Low":
-          return b.price - a.price;
-        default:
-          return 0; // Default sorting
-      }
-    });
+        // Include the item if it passes all filters
+        return true;
+      })
+      .sort((a, b) => {
+        // Sorting logic based on sortBy value
+        switch (sortBy) {
+          case "Rating: High to Low":
+            return b.rating - a.rating; // Sort by rating from high to low
+          case "Delivery Time":
+            return a.time - b.time;
+          case "Cost: Low to High":
+            return a.price - b.price;
+          case "Cost: High to Low":
+            return b.price - a.price;
+          default:
+            return 0; // Default sorting
+        }
+      });
+  }, [data, rating, sortBy, isVeg, isRating]);
 
   // Filter Modal
 
@@ -81,22 +95,32 @@ const Delivery = ({ showAlert }) => {
   };
 
   // Get Actual Rating Value from filter
-  const filterRatingValue = (element) => {
+
+  const filterRatingValue = useCallback((element) => {
     setRating(element);
-  };
-
-  // Get Actual Sortby Value from filter
-  const filterSortByValue = (element) => {
-    setSortBy(element);
-  };
-
-  useEffect(() => {
-    getData();
   }, []);
 
+  // Get Actual Sortby Value from filter
+  const filterSortByValue = useCallback((element) => {
+    setSortBy(element);
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsLoading(true);
+
+      await getData();
+      setIsLoading(false);
+    };
+    fetchData();
+  }, []);
+
+  if (isLoading) return <LoadingSpinner />;
   return (
     <>
-      <Navbar showAlert={showAlert} />
+      <Suspense fallback={<LoadingSpinner />}>
+        <Navbar showAlert={showAlert} />
+      </Suspense>
       {/* Different Sections Bar */}
       <div className="sections mt-14 ml-8 flex items-center space-x-12 font-semibold text-lg ">
         {/* Delivery */}
@@ -139,7 +163,6 @@ const Delivery = ({ showAlert }) => {
       <div className="line-1 border-b border-gray-400 mx-8"></div>
 
       {/* Interaction */}
-
       <div className="filters flex items-center pl-8 w-full h-16 bg-white space-x-4 sticky top-0 z-10">
         {/* Filters */}
         <div
@@ -246,7 +269,6 @@ const Delivery = ({ showAlert }) => {
           </span>
         </button>
       </div>
-
       {/* Products */}
       <div
         className="
@@ -262,13 +284,23 @@ container mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 
             key={item.id}
             to={`/order-online/delivery-detail/${item.id}`}
           >
-            <Cards item={item} />
+            <Suspense fallback={<LoadingSpinner />}>
+              <Cards
+                title={item.title}
+                rating={item.rating}
+                description={item.description}
+                price={item.price}
+                time={item.time}
+                image={item.image}
+              />
+            </Suspense>
           </Link>
         ))}
       </div>
-
       {/* Footer */}
-      <Footer />
+      <Suspense fallback={<LoadingSpinner />}>
+        <Footer />
+      </Suspense>
     </>
   );
 };

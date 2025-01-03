@@ -19,8 +19,8 @@ const Footer = () => {
           <p className="text-base text-gray-700 px-4">
             By continuing past this page, you agree to our Terms of Service,
             Cookie Policy, Privacy Policy and Content Policies. All trademarks
-            are properties of their respective owners. 2008-2024 © Zomato™ Ltd.
-            All rights reserved.
+            are properties of their respective owners. 2008-2024 © Zomato™
+            Ltd. All rights reserved.
           </p>
         </div>
       </div>
@@ -28,4 +28,4 @@ const Footer = () => {
   );
 };
 
-export default Footer;
+export default React.memo(Footer);

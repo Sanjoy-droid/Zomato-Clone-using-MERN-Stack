@@ -1,6 +1,9 @@
+import React from "react";
 import { Link } from "react-router-dom";
 import Footer from "../Footer";
-import HomeCards from "./HomeCards";
+import LoadingSpinner from "../../components/LoadingSpinner";
+import { Suspense } from "react";
+const HomeCards = React.lazy(() => import("./HomeCards"));
 const Home = () => {
   return (
     <>
@@ -52,7 +55,9 @@ const Home = () => {
           </h1>
         </div>
         {/* Oreder Online */}
-        <HomeCards />
+        <Suspense fallback={<LoadingSpinner />}>
+          <HomeCards />
+        </Suspense>
       </div>
       {/* Footer */}
       <Footer />
