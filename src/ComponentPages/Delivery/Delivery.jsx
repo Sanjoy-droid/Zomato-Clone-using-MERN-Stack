@@ -3,7 +3,7 @@ import { faCircleXmark } from "@fortawesome/free-solid-svg-icons";
 import LoadingSpinner from "../../components/LoadingSpinner";
 
 import { Link, useLocation } from "react-router-dom";
-import {
+import React, {
   useContext,
   useState,
   useEffect,
@@ -115,193 +115,161 @@ const Delivery = ({ showAlert }) => {
     fetchData();
   }, []);
 
+  const [query, setQuery] = React.useState("");
+
   if (isLoading) return <LoadingSpinner />;
+
   return (
-    <>
+    <div className="min-h-screen flex flex-col">
       <Suspense fallback={<LoadingSpinner />}>
-        <Navbar showAlert={showAlert} />
+        <Navbar showAlert={showAlert} setQuery={setQuery} />
       </Suspense>
-      {/* Different Sections Bar */}
-      <div className="sections mt-14 ml-8 flex items-center space-x-12 font-semibold text-lg ">
-        {/* Delivery */}
-        <Link to="/order-online">
-          <div className="delivery flex items-center space-x-2 cursor-pointer h-20 border-b-2 border-red-500">
-            <img
-              className={`w-12 h-12 p-2 rounded-full ${
-                isDeliveryPage ? "bg-yellow-100" : ""
-              }`}
-              src="/del_logo.avif"
-              alt=""
-            />
-            <p className="text-red-500">Delivery</p>
-          </div>
-        </Link>
 
-        {/* Dining Out */}
-        <Link to="/dine-out">
-          <div className="dining-out flex items-center space-x-4 cursor-pointer">
-            <img
-              className="w-12 h-12 p-2 rounded-full grayscale"
-              src="/dine1.avif"
-              alt=""
-            />
-            <p className="text-gray-800">Dining Out</p>
-          </div>
-        </Link>
-        {/* Nightlife */}
-        <Link to="/nightlife">
-          <div className="nightlife flex items-center space-x-4 cursor-pointer">
-            <img
-              className="w-12 h-12 p-2 rounded-full grayscale"
-              src="/night1.webp"
-              alt=""
-            />
-            <p className="text-gray-800">Nightlife</p>
-          </div>
-        </Link>
-      </div>
-      <div className="line-1 border-b border-gray-400 mx-8"></div>
-
-      {/* Interaction */}
-      <div className="filters flex items-center pl-8 w-full h-16 bg-white space-x-4 sticky top-0 z-10">
-        {/* Filters */}
-        <div
-          className="filters border-2 border-gray-400 rounded-lg cursor-pointer"
-          onClick={toggleFilter}
-        >
-          <span className="font-sans text-sm w-[5rem]  p-1 text-gray-900 flex justify-center items-center">
-            {
-              isRating || isVeg || rating || sortBy ? ( // Check if any condition is true
-                <>
-                  <span className="bg-red-400 flex justify-center rounded-md w-6">
-                    {" "}
-                    {(isRating ? 1 : 0) +
-                      (isVeg ? 1 : 0) +
-                      (rating ? 1 : 0) +
-                      (sortBy ? 1 : 0)}
-                  </span>
-                  <span> Filters</span>
-                </>
-              ) : (
-                <span>Filters</span>
-              ) // If all conditions are false, don't apply red coloring
-            }
-          </span>
-
-          <FilterModal
-            showFilter={showFilter}
-            toggleFilter={toggleFilter}
-            filterRatingValue={filterRatingValue}
-            filterSortByValue={filterSortByValue}
-          />
-        </div>
-        {/* Filter Custom Sort By */}
-        {sortBy && (
-          <button
-            onClick={() => {
-              setSortBy("");
-            }}
-            className="sort-by border-2 border-gray-400 w-48 h-8 rounded-lg flex items-center justify-center bg-red-400 text-gray-900"
-          >
-            <span className="font-sans text-sm flex justify-center items-center">
-              <>
-                <span className="text-base">
-                  {sortBy} <FontAwesomeIcon icon={faCircleXmark} />
-                </span>
-              </>
-            </span>
-          </button>
-        )}
-        {/* Filter Custom Rating */}
-        {rating && (
-          <button
-            onClick={() => {
-              setRating(null);
-            }}
-            className="sort-by border-2 border-gray-400 w-16 h-8 rounded-lg flex items-center justify-center bg-red-400 text-gray-900"
-          >
-            <span className="font-sans text-sm flex justify-center items-center">
-              <>
-                <span className="text-base">
-                  {rating} <FontAwesomeIcon icon={faCircleXmark} />
-                </span>
-              </>
-            </span>
-          </button>
-        )}
-
-        {/* Rating */}
-        <button
-          onClick={handleRating}
-          className={`border-2 border-gray-400 w-28 h-8 rounded-lg flex items-center justify-center ${
-            isRating ? "bg-red-400 " : "text-gray-900"
-          } `}
-        >
-          <span className="font-sans text-sm flex justify-center items-center">
-            {isRating ? (
-              <>
-                <span className="text-base">Rating 4.0+</span>{" "}
-                <FontAwesomeIcon icon={faCircleXmark} className="ml-1" />
-              </>
-            ) : (
-              "Rating 4.0+"
-            )}
-          </span>
-        </button>
-
-        {/* Pure Veg */}
-        <button
-          onClick={handleVeg}
-          className={`border-2 border-gray-400 w-28 h-8 rounded-lg flex items-center justify-center ${
-            isVeg ? "bg-red-400 " : "text-gray-900"
-          } `}
-        >
-          <span className="font-sans text-sm flex justify-center items-center">
-            {isVeg ? (
-              <>
-                <span className="text-base">
-                  Pure Veg <FontAwesomeIcon icon={faCircleXmark} />
-                </span>
-              </>
-            ) : (
-              <>Pure Veg</>
-            )}
-          </span>
-        </button>
-      </div>
-      {/* Products */}
-      <div
-        className="
-container mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 p-4
-
-
-
-        "
-      >
-        {filteredData.map((item) => (
-          <Link
-            className="w-full transform transition-transform duration-300 hover:scale-[1.02]"
-            key={item.id}
-            to={`/order-online/delivery-detail/${item.id}`}
-          >
-            <Suspense fallback={<LoadingSpinner />}>
-              <Cards
-                title={item.title}
-                rating={item.rating}
-                description={item.description}
-                price={item.price}
-                time={item.time}
-                image={item.image}
+      {/* Sections Bar */}
+      <div className="mt-4 px-4 sm:px-8 overflow-x-auto no-scrollbar">
+        <div className="flex min-w-min space-x-6 sm:space-x-12 pb-2">
+          <Link to="/order-online">
+            <div className="flex items-center space-x-2 whitespace-nowrap">
+              <img
+                className={`w-10 h-10 sm:w-12 sm:h-12 p-2 rounded-full ${isDeliveryPage ? "bg-yellow-100" : ""}`}
+                src="/del_logo.avif"
+                alt=""
               />
-            </Suspense>
+              <p className="text-red-500 text-sm sm:text-base">Delivery</p>
+            </div>
           </Link>
-        ))}
+
+          <Link to="/dine-out">
+            <div className="flex items-center space-x-2 whitespace-nowrap">
+              <img
+                className="w-10 h-10 sm:w-12 sm:h-12 p-2 rounded-full grayscale"
+                src="/dine1.avif"
+                alt=""
+              />
+              <p className="text-gray-800 text-sm sm:text-base">Dining Out</p>
+            </div>
+          </Link>
+
+          <Link to="/nightlife">
+            <div className="flex items-center space-x-2 whitespace-nowrap">
+              <img
+                className="w-10 h-10 sm:w-12 sm:h-12 p-2 rounded-full grayscale"
+                src="/night1.webp"
+                alt=""
+              />
+              <p className="text-gray-800 text-sm sm:text-base">Nightlife</p>
+            </div>
+          </Link>
+        </div>
       </div>
-      {/* Footer */}
+
+      <div className="border-b border-gray-400 mx-4 sm:mx-8"></div>
+
+      {/* Filters Section */}
+      <div className="px-4 py-8 ">
+        <div className="flex flex-wrap justify-center  gap-2 items-center w-full ">
+          <button
+            onClick={toggleFilter}
+            className="min-w-[5rem] h-8 px-3 border-2 border-gray-400 rounded-lg text-sm"
+          >
+            {isRating || isVeg || rating || sortBy ? (
+              <span className="flex items-center space-x-1">
+                <span className="bg-red-400 w-6 rounded-md text-center">
+                  {(isRating ? 1 : 0) +
+                    (isVeg ? 1 : 0) +
+                    (rating ? 1 : 0) +
+                    (sortBy ? 1 : 0)}
+                </span>
+                <span>Filters</span>
+              </span>
+            ) : (
+              "Filters"
+            )}
+          </button>
+
+          {sortBy && (
+            <button
+              onClick={() => setSortBy("")}
+              className="flex items-center space-x-1 px-3 h-8 border-2 border-gray-400 rounded-lg bg-red-400 text-sm"
+            >
+              <span>{sortBy}</span>
+              <FontAwesomeIcon icon={faCircleXmark} />
+            </button>
+          )}
+
+          {rating && (
+            <button
+              onClick={() => setRating(null)}
+              className="flex items-center space-x-1 px-3 h-8 border-2 border-gray-400 rounded-lg bg-red-400 text-sm"
+            >
+              <span>{rating}</span>
+              <FontAwesomeIcon icon={faCircleXmark} />
+            </button>
+          )}
+
+          <button
+            onClick={handleRating}
+            className={`px-3 h-8 border-2 border-gray-400 rounded-lg text-sm ${isRating ? "bg-red-400" : ""}`}
+          >
+            <span className="flex items-center space-x-1">
+              <span>Rating 4.0+</span>
+              {isRating && <FontAwesomeIcon icon={faCircleXmark} />}
+            </span>
+          </button>
+
+          <button
+            onClick={handleVeg}
+            className={`px-3 h-8 border-2 border-gray-400 rounded-lg text-sm ${isVeg ? "bg-red-400" : ""}`}
+          >
+            <span className="flex items-center space-x-1">
+              <span>Pure Veg</span>
+              {isVeg && <FontAwesomeIcon icon={faCircleXmark} />}
+            </span>
+          </button>
+        </div>
+
+        <FilterModal
+          showFilter={showFilter}
+          toggleFilter={toggleFilter}
+          filterRatingValue={filterRatingValue}
+          filterSortByValue={filterSortByValue}
+        />
+      </div>
+
+      {/* Products Grid */}
+      <div className="flex-grow p-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          {filteredData
+            .filter(
+              (item) =>
+                item.title.toLowerCase().includes(query.toLowerCase()) ||
+                item.description.toLowerCase().includes(query.toLowerCase()),
+            )
+            .map((item) => (
+              <Link
+                className="block w-full transform transition-transform duration-300 hover:scale-[1.02]"
+                key={item.id}
+                to={`/order-online/delivery-detail/${item.id}`}
+              >
+                <Suspense fallback={<LoadingSpinner />}>
+                  <Cards
+                    title={item.title}
+                    rating={item.rating}
+                    description={item.description}
+                    price={item.price}
+                    time={item.time}
+                    image={item.image}
+                  />
+                </Suspense>
+              </Link>
+            ))}
+        </div>
+      </div>
+
       <Suspense fallback={<LoadingSpinner />}>
         <Footer />
       </Suspense>
-    </>
+    </div>
   );
 };
 

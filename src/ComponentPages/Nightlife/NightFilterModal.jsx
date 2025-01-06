@@ -49,7 +49,7 @@ const NightFilterModal = ({
           onClick={(e) => {
             e.stopPropagation();
           }}
-          className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-4 rounded-lg shadow-lg z-50 w-[30rem] h-[20rem] cursor-default"
+          className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-4 rounded-lg shadow-lg z-50 w-[30rem]   h-[20rem] cursor-default"
         >
           {/* header */}
           <div className="flex justify-between items-center mb-4">
@@ -68,7 +68,7 @@ const NightFilterModal = ({
             <li
               onClick={toggleSortby}
               className={`flex items-center rounded-md w-20 h-10 justify-center ${
-                showSortby ? "bg-gray-200 font-semibold" : ""
+                showSortby ? "bg-gray-400 font-semibold" : ""
               }`}
             >
               <p className="text-lg"> Sort by </p>
@@ -77,7 +77,7 @@ const NightFilterModal = ({
                 getSortbyValue={getSortbyValue}
               />
               {/* <DiningSortbyModal
-                
+
               /> */}
             </li>
 
@@ -85,7 +85,7 @@ const NightFilterModal = ({
             <li
               onClick={toggleRating}
               className={`flex items-center rounded-md w-20 h-10 justify-center ${
-                showRating ? "bg-gray-200 font-semibold" : ""
+                showRating ? "bg-gray-400 font-semibold" : ""
               }`}
             >
               <p className="text-lg ">

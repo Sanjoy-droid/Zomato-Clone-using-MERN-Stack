@@ -1,75 +1,129 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import {
+  faMagnifyingGlass,
+  faBars,
+  faXmark,
+} from "@fortawesome/free-solid-svg-icons";
 import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
 
-const Navbar = ({ showAlert }) => {
+const Navbar = ({ setQuery, showAlert }) => {
   const navigate = useNavigate();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   const handleClick = () => {
     navigate("/");
   };
 
-  // Log out button onclick event
   const handleLogout = () => {
     localStorage.removeItem("token");
     showAlert("Logged Out Successfully", "success");
     navigate("/");
   };
+
   return (
     <>
-      <div className="navbar flex  items-center m-2">
-        {/* Logo  */}
-        <div className="logo cursor-pointer" onClick={handleClick}>
-          <img
-            className="w-36 h-8 ml-4"
-            src="/nav-logo.avif"
-            alt="zomato logo"
-          />
-        </div>
-        {/* Search */}
+      {/* Overlay */}
+      {isMenuOpen && (
         <div
-          className="nav-search flex w-[39rem] h-12 ml-6 rounded-md
-          border-2 border-solid  bg-white selection:bg-blue-500 selection:text-white"
-        >
-          <div className="search-icon w-[50px] flex items-center justify-center ">
-            <FontAwesomeIcon
-              className="pl-3"
-              icon={faMagnifyingGlass}
-              size="1x"
-            />
+          className="fixed inset-0 bg-black bg-opacity-50 z-40 transition-opacity duration-300"
+          onClick={() => setIsMenuOpen(false)}
+        />
+      )}
+
+      <nav className="p-4 bg-white shadow-sm relative z-50">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex items-center justify-between">
+            {/* Menu Button */}
+            <button
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+            >
+              <FontAwesomeIcon icon={isMenuOpen ? faXmark : faBars} size="lg" />
+            </button>
+
+            {/* Centered Logo */}
+            <div className="absolute left-1/2 transform -translate-x-1/2 flex  justify-center items-center w-20 mx-12">
+              <img
+                className="w-60 h-6 sm:w-60 sm:h-8 cursor-pointer"
+                src="/nav-logo.avif"
+                alt="zomato logo"
+                onClick={handleClick}
+              />
+            </div>
+
+            {/* Desktop Auth Button - Always visible */}
+            <div className="hidden sm:block">
+              {localStorage.getItem("token") ? (
+                <button
+                  className="px-4 py-2 bg-rose-700 text-white text-sm font-medium rounded-xl hover:bg-rose-800 transition"
+                  onClick={handleLogout}
+                >
+                  Log Out
+                </button>
+              ) : null}
+            </div>
           </div>
 
-          <input
-            className="w-full rounded-md outline-none px-2"
-            placeholder="Search for restaurant, cuisine or a dish"
-          />
+          {/* Search Bar */}
+
+          <div className="mt-4 w-full mx-auto px-4">
+            <div className="relative group">
+              <div className="absolute inset-y-0 left-0 flex items-center pl-4">
+                <FontAwesomeIcon
+                  icon={faMagnifyingGlass}
+                  className="text-gray-400 group-hover:text-rose-500 transition-colors"
+                />
+              </div>
+              <input
+                onChange={(e) => setQuery(e.target.value.toLowerCase())}
+                className="w-full pl-12 pr-4 py-3 border-2 rounded-lg outline-none focus:border-rose-500 hover:border-gray-400 transition-colors shadow-sm text-base"
+                placeholder="Search for restaurant, cuisine or a dish"
+              />
+            </div>
+          </div>
         </div>
-        {/* Buttons */}
-        <div className="flex justify-center items-center space-x-4 ml-12 text-lg text-gray-800">
-          {/* Login */}
+      </nav>
+
+      {/* Animated Sidebar */}
+      <div
+        className={`fixed top-0 left-0 h-full w-64 bg-white shadow-lg transform transition-transform duration-300 ease-in-out z-50 ${
+          isMenuOpen ? "translate-x-0" : "-translate-x-full"
+        }`}
+      >
+        <div className="p-6 space-y-4">
+          <div className="pb-4 border-b">
+            <h2
+              className="text-xl font-semibold cursor-pointer hover:bg-gray-400 rounded-xl w-8 h-8 flex justify-center items-center"
+              onClick={() => {
+                setIsMenuOpen(!isMenuOpen);
+              }}
+            >
+              {isMenuOpen ? <FontAwesomeIcon icon={faXmark} size="lg" /> : ""}
+            </h2>
+          </div>
+
           {!localStorage.getItem("token") ? (
-            <Link to="/login">
-              <button className="login transition-opacity duration-300 hover:opacity-50">
-                Log in
-              </button>
-            </Link>
+            <div className="space-y-8 ">
+              <Link to="/login">
+                <button className="w-full px-4 py-2 bg-rose-700 text-white text-sm font-medium rounded-xl hover:bg-rose-800 transition">
+                  Log in
+                </button>
+              </Link>
+              <Link to="/signup">
+                <button className="w-full px-4 py-2 bg-rose-700 text-white text-sm font-medium rounded-xl hover:bg-rose-800 transition mt-6">
+                  Sign up
+                </button>
+              </Link>
+            </div>
           ) : (
             <button
-              className="btn w-[5rem] h-[2.6rem] bg-rose-700 text-white  font-medium flex justify-center items-center text-sm rounded-xl mx-2 cursor-pointer hover:bg-rose-800"
+              className="w-full px-4 py-2 bg-rose-700 text-white text-sm font-medium rounded-xl hover:bg-rose-800 transition"
               onClick={handleLogout}
             >
               Log Out
             </button>
-          )}
-          {/* Sign Up*/}
-          {!localStorage.getItem("token") ? (
-            <Link to="/signup">
-              <button className="signup transition-opacity duration-300 hover:opacity-50">
-                Sign up
-              </button>
-            </Link>
-          ) : (
-            <></>
           )}
         </div>
       </div>
